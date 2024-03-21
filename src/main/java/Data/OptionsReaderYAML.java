@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class OptionsReaderYAML implements OptionsReader {
+public class OptionsReaderYAML {
 
 
     private final String filename;
@@ -23,7 +23,6 @@ public class OptionsReaderYAML implements OptionsReader {
     }
 
 
-    @Override
     public Map<String, Options> readOptions() {
         Map<String, Options> config = new HashMap<>();
         Yaml yaml = new Yaml();

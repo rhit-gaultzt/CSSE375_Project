@@ -1,11 +1,9 @@
 package Presentation;
 
 import Data.DictionaryAPIAdapter;
-import Data.DirectedGraphModel.Graph;
 import Data.DirectedGraphModel.GraphImplementationNidi;
 import Data.JavaByteCodeAdapter.ASM.ClassReaderASM;
 import Data.JavaByteCodeAdapter.ClassReader;
-import Data.OptionsReader;
 import Data.OptionsReaderYAML;
 import Domain.*;
 import Domain.ClassNameChecks.ClassNameCheck;
@@ -39,7 +37,7 @@ public class Main {
         rules.add(new ObserverPatternRule());
         rules.add(new FlowChecker());
 
-        OptionsReader optionsReader = new OptionsReaderYAML("./config.yaml");
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         List<String> classNames = Arrays.asList(args);
         ClassReader classReader = new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classNames, classReader);

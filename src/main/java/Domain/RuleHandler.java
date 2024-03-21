@@ -3,8 +3,7 @@ package Domain;
 import Data.JavaByteCodeAdapter.ClassNode;
 import Data.JavaByteCodeAdapter.ClassReader;
 import Data.Options;
-import Data.OptionsReader;
-
+import Data.OptionsReaderYAML;
 import java.io.IOException;
 import java.util.*;
 
@@ -15,7 +14,7 @@ public class RuleHandler {
     private final Map<String, Options> options;
 
 
-    public RuleHandler(List<Rule> rules, OptionsReader optionsReader,
+    public RuleHandler(List<Rule> rules, OptionsReaderYAML optionsReader,
                        List<String> classNames, ClassReader classReader) throws IOException {
         this.classes = new HashMap<>();
         this.rules   = rules;

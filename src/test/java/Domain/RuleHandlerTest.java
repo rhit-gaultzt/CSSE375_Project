@@ -3,7 +3,7 @@ package Domain;
 import Data.JavaByteCodeAdapter.ClassNode;
 import Data.JavaByteCodeAdapter.ClassReader;
 import Data.Options;
-import Data.OptionsReader;
+import Data.OptionsReaderYAML;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +18,7 @@ public class RuleHandlerTest {
 
     @Test
     public void applyRulesSingleClassSingleRule() throws IOException {
-        OptionsReader optionsReader  = EasyMock.mock(OptionsReader.class);
+        OptionsReaderYAML optionsReader  = EasyMock.mock(OptionsReaderYAML.class);
         ClassReader classReader      = EasyMock.mock(ClassReader.class);
         Map<String, Options> options = EasyMock.mock(Map.class);
 
@@ -62,7 +62,7 @@ public class RuleHandlerTest {
 
     @Test
     public void applyRulesMultipleClassSingleRule() throws IOException {
-        OptionsReader optionsReader  = EasyMock.mock(OptionsReader.class);
+        OptionsReaderYAML optionsReader  = EasyMock.mock(OptionsReaderYAML.class);
         ClassReader classReader      = EasyMock.mock(ClassReader.class);
         Map<String, Options> options = EasyMock.mock(Map.class);
 
@@ -118,7 +118,7 @@ public class RuleHandlerTest {
 
     @Test
     public void applyRulesMultipleClassMultipleRule() throws IOException {
-        OptionsReader optionsReader  = EasyMock.mock(OptionsReader.class);
+        OptionsReaderYAML optionsReader  = EasyMock.mock(OptionsReaderYAML.class);
         ClassReader classReader      = EasyMock.mock(ClassReader.class);
         Map<String, Options> options = EasyMock.mock(Map.class);
 
@@ -214,7 +214,7 @@ public class RuleHandlerTest {
 
     @Test
     public void applyRulesOptionsNull() throws IOException {
-        OptionsReader optionsReader  = EasyMock.mock(OptionsReader.class);
+        OptionsReaderYAML optionsReader  = EasyMock.mock(OptionsReaderYAML.class);
         ClassReader classReader      = EasyMock.mock(ClassReader.class);
         Map<String, Options> options = EasyMock.mock(Map.class);
 
@@ -258,7 +258,7 @@ public class RuleHandlerTest {
 
     @Test
     public void applyRulesDefaultOptionsNull() throws IOException {
-        OptionsReader optionsReader  = EasyMock.mock(OptionsReader.class);
+        OptionsReaderYAML optionsReader  = EasyMock.mock(OptionsReaderYAML.class);
         ClassReader classReader      = EasyMock.mock(ClassReader.class);
         Map<String, Options> options = EasyMock.mock(Map.class);
 
