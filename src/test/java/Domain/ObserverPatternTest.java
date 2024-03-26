@@ -363,4 +363,91 @@ public class ObserverPatternTest {
 
         Assertions.assertEquals(expected, actual);
     }
+
+    @Test
+    public void findObserveeBasicTest() {
+        ObserverPatternRule rule = new ObserverPatternRule();
+
+        ClassNode node = EasyMock.mock(ClassNode.class);
+        MethodNode method1 = EasyMock.mock(MethodNode.class);
+        String method1Name = "addObserver";
+        MethodNode method2 = EasyMock.mock(MethodNode.class);
+        String method2Name = "removeObserver";
+        MethodNode method3 = EasyMock.mock(MethodNode.class);
+        String method3Name = "notifyObserver";
+        List<MethodNode> methods = Arrays.asList(method1, method2, method3);
+        ClassNode observerClass = EasyMock.mock(ClassNode.class);
+        String observerClassName = "Observer";
+        List<ClassNode> methodParams = Arrays.asList(observerClass);
+
+        EasyMock.expect(node.getMethods()).andReturn(methods).times(3);
+        EasyMock.expect(method1.getName()).andReturn(method1Name).times(3);
+        EasyMock.expect(method1.getArgumentTypes()).andReturn(methodParams);
+        EasyMock.expect(method2.getName()).andReturn(method2Name).times(2);
+        EasyMock.expect(method2.getArgumentTypes()).andReturn(methodParams);
+        EasyMock.expect(method3.getName()).andReturn(method3Name).times(1);
+        EasyMock.expect(method3.getArgumentTypes()).andReturn(methodParams);
+        EasyMock.expect(observerClass.getClassName()).andReturn(observerClassName).times(3);
+
+        EasyMock.replay(node, method1, method2, method3, observerClass);
+
+        boolean expected = true;
+        Assertions.assertEquals(expected, rule.findObservee(node));
+        EasyMock.verify(node, method1, method2, method3, observerClass);
+    }
+
+    @Test
+    public void findObserveeFalseTest() {
+        ObserverPatternRule rule = new ObserverPatternRule();
+
+        ClassNode node = EasyMock.mock(ClassNode.class);
+        MethodNode method1 = EasyMock.mock(MethodNode.class);
+        String method1Name = "addObserver";
+        MethodNode method2 = EasyMock.mock(MethodNode.class);
+        String method2Name = "removeObserver";
+        MethodNode method3 = EasyMock.mock(MethodNode.class);
+        String method3Name = "addObserver";
+        List<MethodNode> methods = Arrays.asList(method1, method2, method3);
+        ClassNode observerClass = EasyMock.mock(ClassNode.class);
+        String observerClassName = "Observer";
+        List<ClassNode> methodParams = Arrays.asList(observerClass);
+
+        EasyMock.expect(node.getMethods()).andReturn(methods).times(3);
+        EasyMock.expect(method1.getName()).andReturn(method1Name).times(3);
+        EasyMock.expect(method1.getArgumentTypes()).andReturn(methodParams);
+        EasyMock.expect(method2.getName()).andReturn(method2Name).times(2);
+        EasyMock.expect(method2.getArgumentTypes()).andReturn(methodParams);
+        EasyMock.expect(method3.getName()).andReturn(method3Name).times(1);
+        EasyMock.expect(observerClass.getClassName()).andReturn(observerClassName).times(2);
+
+        EasyMock.replay(node, method1, method2, method3, observerClass);
+
+        boolean expected = false;
+        Assertions.assertEquals(expected, rule.findObservee(node));
+        EasyMock.verify(node, method1, method2, method3, observerClass);
+    }
+
+    @Test
+    public void findObserveeOneMethodOtherWordsTest() {
+        ObserverPatternRule rule = new ObserverPatternRule();
+
+        ClassNode node = EasyMock.mock(ClassNode.class);
+        MethodNode method1 = EasyMock.mock(MethodNode.class);
+        String method1Name = "adddisconnectnotifyObserver";
+        List<MethodNode> methods = Arrays.asList(method1);
+        ClassNode observerClass = EasyMock.mock(ClassNode.class);
+        String observerClassName = "Observer";
+        List<ClassNode> methodParams = Arrays.asList(observerClass);
+
+        EasyMock.expect(node.getMethods()).andReturn(methods).times(3);
+        EasyMock.expect(method1.getName()).andReturn(method1Name).times(3);
+        EasyMock.expect(method1.getArgumentTypes()).andReturn(methodParams).times(3);
+        EasyMock.expect(observerClass.getClassName()).andReturn(observerClassName).times(3);
+
+        EasyMock.replay(node, method1, observerClass);
+
+        boolean expected = true;
+        Assertions.assertEquals(expected, rule.findObservee(node));
+        EasyMock.verify(node, method1, observerClass);
+    }
 }
