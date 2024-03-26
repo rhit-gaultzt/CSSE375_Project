@@ -7,6 +7,7 @@ import Domain.Issue;
 import Domain.Rule;
 import Domain.Severity;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class ObserverPatternRule implements Rule {
@@ -48,24 +49,23 @@ public class ObserverPatternRule implements Rule {
     }
 
     public boolean findObservee (ClassNode node) {
-        Boolean[] foundValues = new Boolean[]{false, false, false};
+        return hasObserveeMethod(node, listForAdd) &&
+                hasObserveeMethod(node, listForRemove) &&
+                hasObserveeMethod(node, listForNotify);
+    }
 
+    private boolean hasObserveeMethod(ClassNode node, String[] listForType) {
         for (MethodNode method : node.getMethods()) {
-            if (stringContainsItemFromList(method.getName(), listForAdd) && methodContainsObserverArgument(method.getArgumentTypes())) {
-                foundValues[0] = true;
-            }
-            if (stringContainsItemFromList(method.getName(), listForRemove) && methodContainsObserverArgument(method.getArgumentTypes())) {
-                foundValues[1] = true;
-            }
-            if (stringContainsItemFromList(method.getName(), listForNotify) && methodContainsObserverArgument(method.getArgumentTypes())) {
-                foundValues[2] = true;
-            }
-
-            if (foundValues[0] && foundValues[1] && foundValues[2]) {
+            if (isObserveeMethod(method, listForType)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean isObserveeMethod(MethodNode method, String[] listForType) {
+        return stringContainsItemFromList(method.getName(), listForType) &&
+                methodContainsObserverArgument(method.getArgumentTypes());
     }
 
     public boolean methodContainsObserverArgument (List<ClassNode> arguments) {
