@@ -13,10 +13,16 @@ import Domain.ClassNameChecks.ClassNameStartsWithCapital;
 import Domain.Rules.DependencyInversionPrincipleRule;
 import Domain.Rules.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class Main {
 
@@ -38,9 +44,10 @@ public class Main {
         rules.add(new FlowChecker());
 
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
-        List<String> classNames = Arrays.asList(args);
+        HashMap<String, InputStream> classData = getClassStreams(args);
+
         ClassReader classReader = new ClassReaderASM();
-        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classNames, classReader);
+        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
         Output output = new CLIOutput();
 
         try {
@@ -52,4 +59,25 @@ public class Main {
         }
     }
 
+    public static HashMap<String, InputStream> getClassStreams(String[] filenames) throws IOException {
+        HashMap<String, InputStream> classData = new HashMap<>();
+        for (String c : filenames) {
+            if (c.endsWith(".jar")) {
+                try (JarFile jar = new JarFile(c)) {
+                    Enumeration<JarEntry> jars = jar.entries();
+                    while (jars.hasMoreElements()) {
+                        JarEntry j = jars.nextElement();
+                        if (j.getName().endsWith(".class")) {
+                            InputStream input = jar.getInputStream(j);
+                            classData.put(j.getName(),input);
+                        }
+                    }
+                }
+            } else {
+                InputStream input = Files.newInputStream(new File(c).toPath());
+                classData.put(c,input);
+            }
+        }
+        return classData;
+    }
 }

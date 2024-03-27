@@ -20,14 +20,14 @@ public class ObserverPatternRule implements Rule {
 
     @Override
     public Options getDefaultOptions() {
-        Options options = new Options(new ArrayList<String>(), new ArrayList<String>());
+        Options options = new Options(new ArrayList<>(), new ArrayList<>());
         options.put("ObserverIdentified", Severity.INFO.toString());
         return options;
     }
 
     @Override
     public List<Issue> apply (Map<String, ClassNode> classNodes, Options options) {
-        List<Issue> issues = new ArrayList<Issue>();
+        List<Issue> issues = new ArrayList<>();
 
         for (Map.Entry<String, ClassNode> node : classNodes.entrySet()) { // Loop through every class
             ClassNode classNode = node.getValue();
@@ -78,18 +78,10 @@ public class ObserverPatternRule implements Rule {
     }
 
     public boolean stringContainsItemFromList (String inputStr, String[] items) {
-        return Arrays.stream(items).anyMatch(inputStr::contains);
+        return inputStr.matches(".*(" + String.join("|", items) + ").*");
     }
 
     public Issue createIssue (String rule, int line, String fileName, String className, String message, String enumCatch) {
-        if (enumCatch.equals("INFO")) {
-            return new Issue(rule, line, fileName, className, message, Severity.INFO);
-        } else if (enumCatch.equals("WARNING")) {
-            return new Issue(rule, line, fileName, className, message, Severity.WARNING);
-        } else if (enumCatch.equals("ERROR")) {
-            return new Issue(rule, line, fileName, className, message, Severity.ERROR);
-        } else {
-            return new Issue(rule, line, fileName, className, message, Severity.SUPPRESS);
-        }
+        return new Issue(rule, line, fileName, className, message, Severity.valueOf(enumCatch));
     }
 }

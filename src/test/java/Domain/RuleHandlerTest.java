@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -24,8 +26,9 @@ public class RuleHandlerTest {
 
         // Classes
         ClassNode classNode1         = EasyMock.mock(ClassNode.class);
-        ArrayList<String> classes    = new ArrayList<>();
-        classes.add("ClassName1");
+        InputStream inputStream1      = EasyMock.mock(InputStream.class);
+        HashMap<String, InputStream> classes    = new HashMap<>();
+        classes.put("ClassName1", inputStream1);
 
         // Rules
         Rule    rule1                = EasyMock.mock(Rule.class);
@@ -39,7 +42,7 @@ public class RuleHandlerTest {
 
         // Record
         EasyMock.expect(optionsReader.readOptions()).andReturn(options);
-        EasyMock.expect(classReader.createClassNode(classes.get(0))).andReturn(classNode1);
+        EasyMock.expect(classReader.createClassNode(inputStream1)).andReturn(classNode1);
         EasyMock.expect(rule1.getDefaultOptions()).andReturn(defOptRule1);
         EasyMock.expect(options.get(EasyMock.anyString())).andReturn(optRule1);
         optRule1.applyDefault(defOptRule1);
@@ -49,11 +52,11 @@ public class RuleHandlerTest {
         EasyMock.expectLastCall();
 
         // Replay
-        EasyMock.replay(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1);
+        EasyMock.replay(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1, inputStream1);
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classes, classReader);
         ArrayList<Issue> issues = (ArrayList<Issue>) ruleHandler.applyRules();
 
-        EasyMock.verify(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1);
+        EasyMock.verify(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1, inputStream1);
         Assertions.assertEquals(new ArrayList<Issue>(){{
                 add(issue1);
             }}, issues);
@@ -70,10 +73,13 @@ public class RuleHandlerTest {
         ClassNode classNode1         = EasyMock.mock(ClassNode.class);
         ClassNode classNode2         = EasyMock.mock(ClassNode.class);
         ClassNode classNode3         = EasyMock.mock(ClassNode.class);
-        ArrayList<String> classes    = new ArrayList<>();
-        classes.add("ClassName1");
-        classes.add("ClassName2");
-        classes.add("ClassName3");
+        InputStream inputStream1      = EasyMock.mock(InputStream.class);
+        InputStream inputStream2      = EasyMock.mock(InputStream.class);
+        InputStream inputStream3      = EasyMock.mock(InputStream.class);
+        HashMap<String, InputStream> classes    = new HashMap<>();
+        classes.put("ClassName1", inputStream1);
+        classes.put("ClassName2", inputStream2);
+        classes.put("ClassName3", inputStream3);
 
         // Rules
         Rule    rule1                = EasyMock.mock(Rule.class);
@@ -89,9 +95,9 @@ public class RuleHandlerTest {
 
         // Record
         EasyMock.expect(optionsReader.readOptions()).andReturn(options);
-        EasyMock.expect(classReader.createClassNode(classes.get(0))).andReturn(classNode1);
-        EasyMock.expect(classReader.createClassNode(classes.get(1))).andReturn(classNode2);
-        EasyMock.expect(classReader.createClassNode(classes.get(2))).andReturn(classNode3);
+        EasyMock.expect(classReader.createClassNode(inputStream1)).andReturn(classNode1);
+        EasyMock.expect(classReader.createClassNode(inputStream2)).andReturn(classNode2);
+        EasyMock.expect(classReader.createClassNode(inputStream3)).andReturn(classNode3);
         EasyMock.expect(rule1.getDefaultOptions()).andReturn(defOptRule1);
         EasyMock.expect(options.get(EasyMock.anyString())).andReturn(optRule1);
         optRule1.applyDefault(defOptRule1);
@@ -103,11 +109,11 @@ public class RuleHandlerTest {
         EasyMock.expectLastCall();
 
         // Replay
-        EasyMock.replay(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1);
+        EasyMock.replay(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1, inputStream1, inputStream2, inputStream3);
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classes, classReader);
         ArrayList<Issue> issues = (ArrayList<Issue>) ruleHandler.applyRules();
 
-        EasyMock.verify(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1);
+        EasyMock.verify(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1, inputStream1, inputStream2, inputStream3);
         Assertions.assertEquals(new ArrayList<Issue>(){{
             add(issue1);
             add(issue2);
@@ -126,10 +132,13 @@ public class RuleHandlerTest {
         ClassNode classNode1         = EasyMock.mock(ClassNode.class);
         ClassNode classNode2         = EasyMock.mock(ClassNode.class);
         ClassNode classNode3         = EasyMock.mock(ClassNode.class);
-        ArrayList<String> classes    = new ArrayList<>();
-        classes.add("ClassName1");
-        classes.add("ClassName2");
-        classes.add("ClassName3");
+        InputStream inputStream1      = EasyMock.mock(InputStream.class);
+        InputStream inputStream2      = EasyMock.mock(InputStream.class);
+        InputStream inputStream3      = EasyMock.mock(InputStream.class);
+        HashMap<String, InputStream> classes    = new HashMap<>();
+        classes.put("ClassName1", inputStream1);
+        classes.put("ClassName2", inputStream2);
+        classes.put("ClassName3", inputStream3);
 
         // Rules
         Rule    rule1                = EasyMock.mock(Rule.class);
@@ -160,9 +169,9 @@ public class RuleHandlerTest {
 
         // Record
         EasyMock.expect(optionsReader.readOptions()).andReturn(options);
-        EasyMock.expect(classReader.createClassNode(classes.get(0))).andReturn(classNode1);
-        EasyMock.expect(classReader.createClassNode(classes.get(1))).andReturn(classNode2);
-        EasyMock.expect(classReader.createClassNode(classes.get(2))).andReturn(classNode3);
+        EasyMock.expect(classReader.createClassNode(inputStream1)).andReturn(classNode1);
+        EasyMock.expect(classReader.createClassNode(inputStream2)).andReturn(classNode2);
+        EasyMock.expect(classReader.createClassNode(inputStream3)).andReturn(classNode3);
 
         EasyMock.expect(rule1.getDefaultOptions()).andReturn(defOptRule1);
         EasyMock.expect(options.get(EasyMock.anyString())).andReturn(optRule1);
@@ -196,11 +205,11 @@ public class RuleHandlerTest {
         EasyMock.expectLastCall();
 
         // Replay
-        EasyMock.replay(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1, rule2, defOptRule2, optRule2, rule3, defOptRule3, optRule3, rule4, defOptRule4, optRule4);
+        EasyMock.replay(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1, rule2, defOptRule2, optRule2, rule3, defOptRule3, optRule3, rule4, defOptRule4, optRule4, inputStream1, inputStream2, inputStream3);
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classes, classReader);
         ArrayList<Issue> issues = (ArrayList<Issue>) ruleHandler.applyRules();
 
-        EasyMock.verify(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1, rule2, defOptRule2, optRule2, rule3, defOptRule3, optRule3, rule4, defOptRule4, optRule4);
+        EasyMock.verify(optionsReader, classReader, options, classNode1, classNode2, classNode3, rule1, defOptRule1, optRule1, rule2, defOptRule2, optRule2, rule3, defOptRule3, optRule3, rule4, defOptRule4, optRule4, inputStream1, inputStream2, inputStream3);
         Assertions.assertEquals(new ArrayList<Issue>(){{
             add(issue1);
             add(issue2);
@@ -220,8 +229,9 @@ public class RuleHandlerTest {
 
         // Classes
         ClassNode classNode1         = EasyMock.mock(ClassNode.class);
-        ArrayList<String> classes    = new ArrayList<>();
-        classes.add("ClassName1");
+        InputStream inputStream1      = EasyMock.mock(InputStream.class);
+        HashMap<String, InputStream> classes    = new HashMap<>();
+        classes.put("ClassName1", inputStream1);
 
         // Rules
         Rule    rule1                = EasyMock.mock(Rule.class);
@@ -235,7 +245,7 @@ public class RuleHandlerTest {
 
         // Record
         EasyMock.expect(optionsReader.readOptions()).andReturn(options);
-        EasyMock.expect(classReader.createClassNode(classes.get(0))).andReturn(classNode1);
+        EasyMock.expect(classReader.createClassNode(inputStream1)).andReturn(classNode1);
         EasyMock.expect(rule1.getDefaultOptions()).andReturn(defOptRule1);
         EasyMock.expect(options.get(EasyMock.anyString())).andReturn(null);
         defOptRule1.applyDefault(defOptRule1);
@@ -245,11 +255,11 @@ public class RuleHandlerTest {
         EasyMock.expectLastCall();
 
         // Replay
-        EasyMock.replay(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1);
+        EasyMock.replay(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1, inputStream1);
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classes, classReader);
         ArrayList<Issue> issues = (ArrayList<Issue>) ruleHandler.applyRules();
 
-        EasyMock.verify(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1);
+        EasyMock.verify(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1, inputStream1);
         Assertions.assertEquals(new ArrayList<Issue>(){{
             add(issue1);
         }}, issues);
@@ -264,8 +274,9 @@ public class RuleHandlerTest {
 
         // Classes
         ClassNode classNode1         = EasyMock.mock(ClassNode.class);
-        ArrayList<String> classes    = new ArrayList<>();
-        classes.add("ClassName1");
+        InputStream inputStream1      = EasyMock.mock(InputStream.class);
+        HashMap<String, InputStream> classes    = new HashMap<>();
+        classes.put("ClassName1", inputStream1);
 
         // Rules
         Rule    rule1                = EasyMock.mock(Rule.class);
@@ -279,7 +290,7 @@ public class RuleHandlerTest {
 
         // Record
         EasyMock.expect(optionsReader.readOptions()).andReturn(options);
-        EasyMock.expect(classReader.createClassNode(classes.get(0))).andReturn(classNode1);
+        EasyMock.expect(classReader.createClassNode(inputStream1)).andReturn(classNode1);
         EasyMock.expect(rule1.getDefaultOptions()).andReturn(null);
         EasyMock.expect(options.get(EasyMock.anyString())).andReturn(null);
         EasyMock.expect(rule1.apply(EasyMock.anyObject(), EasyMock.anyObject())).andReturn(new ArrayList<Issue>(){{
@@ -288,11 +299,11 @@ public class RuleHandlerTest {
         EasyMock.expectLastCall();
 
         // Replay
-        EasyMock.replay(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1);
+        EasyMock.replay(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1, inputStream1);
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classes, classReader);
         ArrayList<Issue> issues = (ArrayList<Issue>) ruleHandler.applyRules();
 
-        EasyMock.verify(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1);
+        EasyMock.verify(optionsReader, classReader, options, classNode1, rule1, defOptRule1, optRule1, inputStream1);
         Assertions.assertEquals(new ArrayList<Issue>(){{
             add(issue1);
         }}, issues);

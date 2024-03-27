@@ -5,6 +5,7 @@ import Data.JavaByteCodeAdapter.ClassReader;
 import Data.Options;
 import Data.OptionsReaderYAML;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -15,12 +16,12 @@ public class RuleHandler {
 
 
     public RuleHandler(List<Rule> rules, OptionsReaderYAML optionsReader,
-                       List<String> classNames, ClassReader classReader) throws IOException {
+                       HashMap<String, InputStream> classData, ClassReader classReader) throws IOException {
         this.classes = new HashMap<>();
         this.rules   = rules;
         this.options = optionsReader.readOptions();
-        for(String className: classNames) {
-            this.classes.put(className, classReader.createClassNode(className));
+        for(String className: classData.keySet()) {
+            this.classes.put(className, classReader.createClassNode(classData.get(className)));
         }
     }
 
