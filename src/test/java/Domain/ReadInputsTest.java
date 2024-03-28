@@ -12,7 +12,8 @@ public class ReadInputsTest {
     @Test
     public void testGetClassStreamsOfJar() throws IOException {
         String[] testFiles = new String[] {"testJar.jar"};
-        HashMap<String, InputStream> streams = Main.getClassStreams(testFiles);
+        Main main = new Main();
+        HashMap<String, InputStream> streams = main.getClassStreams(testFiles);
         Assertions.assertEquals(3, streams.size());
         Assertions.assertTrue(streams.containsKey("C.class"));
         Assertions.assertTrue(streams.containsKey("BasicClass.class"));
@@ -23,7 +24,8 @@ public class ReadInputsTest {
     public void testGetClassStreamsOfFiles() throws IOException {
         String[] testFiles = new String[] {"target/classes/TestClasses/C.class",
                 "target/classes/TestClasses/BasicClass.class", "target/classes/TestClasses/BasicSingleton.class"};
-        HashMap<String, InputStream> streams = Main.getClassStreams(testFiles);
+        Main main = new Main();
+        HashMap<String, InputStream> streams = main.getClassStreams(testFiles);
         Assertions.assertEquals(3, streams.size());
         Assertions.assertTrue(streams.containsKey("target/classes/TestClasses/C.class"));
         Assertions.assertTrue(streams.containsKey("target/classes/TestClasses/BasicClass.class"));
@@ -34,7 +36,8 @@ public class ReadInputsTest {
     public void testGetClassStreamsOfBoth() throws IOException {
         String[] testFiles = new String[] {"testJar.jar", "target/classes/TestClasses/mime.class",
                 "target/classes/TestClasses/symbolism.class"};
-        HashMap<String, InputStream> streams = Main.getClassStreams(testFiles);
+        Main main = new Main();
+        HashMap<String, InputStream> streams = main.getClassStreams(testFiles);
         Assertions.assertEquals(5, streams.size());
         Assertions.assertTrue(streams.containsKey("C.class"));
         Assertions.assertTrue(streams.containsKey("BasicClass.class"));

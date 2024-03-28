@@ -17,60 +17,64 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        List<Rule> rules = new ArrayList<>();
-        rules.add(new DecoratorPatternRule());
-        rules.add(new VariableNameConventionRule());
-        rules.add(new ClassNameRule(new ArrayList<ClassNameCheck>() {{
-            add(new ClassNameStartsWithCapital());
-            add(new ClassNameInvalidCharacters());
-            add(new ClassNameInvalidWords(new DictionaryAPIAdapter()));
-        }}));
-        rules.add(new HollywoodPrincipleRule(new GraphImplementationNidi()));
-        rules.add(new PrincipleLeastKnowledgeRule());
-        rules.add(new NoMisleadingCharacterClassRule());
-        rules.add(new DependencyInversionPrincipleRule());
-        rules.add(new SingletonRule());
-        rules.add(new ObserverPatternRule());
-        rules.add(new FlowChecker());
-
+    public static void main(String[] args) {
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
-        HashMap<String, InputStream> classData = getClassStreams(args);
-
-        ClassReader classReader = new ClassReaderASM();
-        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
         Output output = new CLIOutput();
+        Main main = new Main();
 
         try {
-            List<Issue> issues = ruleHandler.applyRules();
+            List<Issue> issues = main.findIssues(args, optionsReader);
             output.outputIssues(issues);
-        } catch (Error error) {
-            String message = error.getMessage();
-            output.outputError(message);
+        } catch (Exception error) {
+            output.outputError(error.getMessage());
         }
     }
 
-    public static HashMap<String, InputStream> getClassStreams(String[] filenames) throws IOException {
+    public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader) throws IOException {
+        List<Rule> rules = setupRules();
+        HashMap<String, InputStream> classData = getClassStreams(args);
+        ClassReader classReader = new ClassReaderASM();
+        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+        closeStreams(classData.values());
+        return ruleHandler.applyRules();
+    }
+
+    public List<Rule> setupRules() {
+        return new ArrayList<Rule>() {{
+            add(new DecoratorPatternRule());
+            add(new VariableNameConventionRule());
+            add(new HollywoodPrincipleRule(new GraphImplementationNidi()));
+            add(new PrincipleLeastKnowledgeRule());
+            add(new NoMisleadingCharacterClassRule());
+            add(new DependencyInversionPrincipleRule());
+            add(new SingletonRule());
+            add(new ObserverPatternRule());
+            add(new FlowChecker());
+            add(new ClassNameRule(new ArrayList<ClassNameCheck>() {{
+                add(new ClassNameStartsWithCapital());
+                add(new ClassNameInvalidCharacters());
+                add(new ClassNameInvalidWords(new DictionaryAPIAdapter()));
+            }}));
+        }};
+    }
+
+    public HashMap<String, InputStream> getClassStreams(String[] filenames) throws IOException {
         HashMap<String, InputStream> classData = new HashMap<>();
         for (String c : filenames) {
             if (c.endsWith(".jar")) {
-                try (JarFile jar = new JarFile(c)) {
-                    Enumeration<JarEntry> jars = jar.entries();
-                    while (jars.hasMoreElements()) {
-                        JarEntry j = jars.nextElement();
-                        if (j.getName().endsWith(".class")) {
-                            InputStream input = jar.getInputStream(j);
-                            classData.put(j.getName(),input);
-                        }
+                JarFile jar = new JarFile(c);
+                Enumeration<JarEntry> jars = jar.entries();
+                while (jars.hasMoreElements()) {
+                    JarEntry j = jars.nextElement();
+                    if (j.getName().endsWith(".class")) {
+                        InputStream input = jar.getInputStream(j);
+                        classData.put(j.getName(),input);
                     }
                 }
             } else {
@@ -79,5 +83,11 @@ public class Main {
             }
         }
         return classData;
+    }
+
+    public void closeStreams(Collection<InputStream> streams) throws IOException {
+        for (InputStream s : streams) {
+            s.close();
+        }
     }
 }
