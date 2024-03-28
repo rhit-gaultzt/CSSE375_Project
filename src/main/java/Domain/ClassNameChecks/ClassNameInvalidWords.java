@@ -48,30 +48,30 @@ public class ClassNameInvalidWords implements ClassNameCheck {
             } else if (anyWordAllowed) {
                 if (!dictionary.isWord(word)) {
                     Issue issue = new Issue();
-                    issue.message = "class name contains invalid word: " + word + " is not a word";
+                    issue.setMessage("class name contains invalid word: " + word + " is not a word");
                     issues.add(issue);
                 }
             } else if (nounAllowed && verbAllowed) {
                 if (!(dictionary.isNoun(word) || dictionary.isVerb(word))) {
                     Issue issue = new Issue();
-                    issue.message = "class name contains invalid word: " + word + " is not a noun or verb";
+                    issue.setMessage("class name contains invalid word: " + word + " is not a noun or verb");
                     issues.add(issue);
                 }
             } else if (nounAllowed) {
                 if (!dictionary.isNoun(word)) {
                     Issue issue = new Issue();
-                    issue.message = "class name contains invalid word: " + word + " is not a noun";
+                    issue.setMessage("class name contains invalid word: " + word + " is not a noun");
                     issues.add(issue);
                 }
             } else if (verbAllowed) {
                 if (!dictionary.isVerb(word)) {
                     Issue issue = new Issue();
-                    issue.message = "class name contains invalid word: " + word + " is not a verb";
+                    issue.setMessage("class name contains invalid word: " + word + " is not a verb");
                     issues.add(issue);
                 }
             } else {
                 Issue issue = new Issue();
-                issue.message = "class name contains invalid word: " + word;
+                issue.setMessage("class name contains invalid word: " + word);
                 issues.add(issue);
             }
         }

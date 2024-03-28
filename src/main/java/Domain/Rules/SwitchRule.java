@@ -42,7 +42,9 @@ public class SwitchRule implements Rule {
         for (int i = 0; i < instructions.size(); i++) {
             AbstractInsnNode instruction = instructions.get(i);
             if (instruction.isSwitchNode()) {
-                issues.add(createIssue(classNode, methodNode, lineNumber, options));
+                String message = "method " + methodNode.getName() +
+                        " has a switch statement or is comparing the same variable to many values";
+                issues.add(new Issue(ruleName, classNode, lineNumber, options, message));
             } else if (instruction.isIfNode()){
                 addVariableIfOccurrence(variableCounts, instruction.getJumpNode(), lineNumber);
             } else if (instruction.isLineNumberNode()) {
@@ -70,33 +72,22 @@ public class SwitchRule implements Rule {
 
         for (Map.Entry<Integer, VariableInfo> entry : variableCounts.entrySet()) {
             if (entry.getValue().count >= 3) {
-                issues.add(createIssue(classNode, methodNode, entry.getValue().lineNumber, options));
+                String message = "method " + methodNode.getName() +
+                        " has a switch statement or is comparing the same variable to many values";
+                issues.add(new Issue(ruleName, classNode, entry.getValue().lineNumber, options, message));
             }
         }
 
         return issues;
     }
 
-    private Issue createIssue(ClassNode classNode, MethodNode methodNode,
-                              int lineNumber, Options options) {
-        Issue issue = new Issue();
-        issue.severity = Severity.valueOf(options.get("severity"));
-        issue.rule = this.ruleName;
-        issue.classValue = classNode.getClassName();
-        issue.file = classNode.getFileName();
-        issue.line = lineNumber;
-        issue.message = "method " + methodNode.getName() +
-                " has a switch statement or is comparing the same variable to many values";
-        return issue;
-    }
-
     private List<Issue> filterDuplicates(List<Issue> issues) {
         List<Issue> result = new ArrayList<>();
         List<Integer> lineNumbers = new ArrayList<>();
         for (Issue issue : issues) {
-            if (!lineNumbers.contains(issue.line)) {
+            if (!lineNumbers.contains(issue.getLine())) {
                 result.add(issue);
-                lineNumbers.add(issue.line);
+                lineNumbers.add(issue.getLine());
             }
         }
         return result;

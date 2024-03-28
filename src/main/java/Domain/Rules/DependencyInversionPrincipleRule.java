@@ -31,7 +31,7 @@ public class DependencyInversionPrincipleRule implements Rule {
             if (checkForInterface(classInQuestion)) {
                 String infoMessage = "Dependency Inversion Principle found in class \"" + classInQuestion.getClassName() + "\"";
 
-                issues.add(createIssue("DepInvPrincipleInfo", LINE_NUMBER, classInQuestion.getFileName(), classInQuestion.getClassName(), infoMessage, options.get("DepInvPrincipleInfo")));
+                issues.add(new Issue("DepInvPrincipleInfo", classInQuestion, LINE_NUMBER, options, infoMessage));
             } else {
                 issues.addAll(checkForSimilarClasses(classInQuestion, classNodes, options));
             }
@@ -68,7 +68,7 @@ public class DependencyInversionPrincipleRule implements Rule {
                         for (ClassNode argumentsFromOne : methodFromOne.getArgumentTypes()) {
                             if (stringChecker(argumentsFromOne.getClassName(), argumentsFromTwo.getClassName())) {
                                 String message = "DependencyInversionPrinciple Violation: Class \"" + classOneName + "\" found to be similar to \"" + classTwoName + "\"";
-                                issues.add(createIssue("SimilarClassWarning", LINE_NUMBER, classOneFile, classOneFile + ", " + classTwoFile, message, options.get("SimilarClassWarning")));
+                                issues.add(new Issue("SimilarClassWarning", LINE_NUMBER, classOneFile, classOneFile + ", " + classTwoFile, message, Severity.valueOf(options.get("SimilarClassWarning"))));
                                 return issues;
                             }
                         }
@@ -81,18 +81,5 @@ public class DependencyInversionPrincipleRule implements Rule {
 
     public boolean stringChecker (String stringOne, String stringTwo) {
         return stringOne.equals(stringTwo);
-    }
-
-    // Pulled from NoMisleadingClassRule. Thus, this works.
-    public Issue createIssue (String rule, int line, String fileName, String className, String message, String enumCatch) {
-        if (enumCatch.equals("INFO")) {
-            return new Issue(rule, line, fileName, className, message, Severity.INFO);
-        } else if (enumCatch.equals("WARNING")) {
-            return new Issue(rule, line, fileName, className, message, Severity.WARNING);
-        } else if (enumCatch.equals("ERROR")) {
-            return new Issue(rule, line, fileName, className, message, Severity.ERROR);
-        } else {
-            return new Issue(rule, line, fileName, className, message, Severity.SUPPRESS);
-        }
     }
 }

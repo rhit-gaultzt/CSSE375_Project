@@ -62,14 +62,10 @@ public class NoMisleadingCharacterClassRule implements Rule {
             if (name.contains(symbols[i])) {
                 String message = variants[i] + " " + symbols[i] + " was found within " + type + " name \"" + name + "\"";
                 String enumCatch = options.get(symbols[i] + " " + type);
-                issues.add(createIssue(line, fileName, className, message, enumCatch));
+                issues.add(new Issue(RULE, line, fileName, className, message, Severity.valueOf(enumCatch)));
             }
         }
         return issues;
 
-    }
-
-    public Issue createIssue (int line, String fileName, String className, String message, String enumCatch) {
-        return new Issue(RULE, line, fileName, className, message, Severity.valueOf(enumCatch));
     }
 }

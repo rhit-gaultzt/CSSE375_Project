@@ -78,16 +78,9 @@ public class PrincipleLeastKnowledgeRule implements Rule {
                         else if (!(classValidNames.contains(methodOwnerName)
                                 || methodValidNames.contains(methodOwnerName)
                                 || isWhitelistedPackage)) {
-
-                            Issue issue = new Issue();
-                            issue.severity = Severity.valueOf(options.get("severity"));
-                            issue.rule = this.ruleName;
-                            issue.classValue = classNode.getClassName();
-                            issue.file = classNode.getFileName();
-                            issue.line = lineNumber;
-                            issue.message = "method " + methodNode.getName() + " makes call to "
+                            String message = "method " + methodNode.getName() + " makes call to "
                                     + methodOwnerName + " violating the Principle of Least Knowledge";
-                            issues.add(issue);
+                            issues.add(new Issue(this.ruleName, classNode, lineNumber, options, message));
                             methodValidNames.add(methodOwnerName); // reducing duplication
                         }
                     }

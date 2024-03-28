@@ -15,7 +15,7 @@ public class ClassNameInvalidCharacters implements ClassNameCheck {
             char character = className.charAt(i);
             if (!Character.isJavaIdentifierPart(character)) {
                 Issue issue = new Issue();
-                issue.message = "class " + className + " has invalid character \'" + character + "\'";
+                issue.setMessage("class " + className + " has invalid character \'" + character + "\'");
                 issues.add(issue);
             }
         }

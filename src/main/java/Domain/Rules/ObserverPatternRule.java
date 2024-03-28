@@ -38,7 +38,7 @@ public class ObserverPatternRule implements Rule {
                         for (MethodNode observerMethod : classNodeInExamination.getMethods()) { // Loop through every method of observer
                             if (observerMethod.getName().contains("update")) { // If the class contains update
                                 String infoMessage = "Observer Pattern Found";
-                                issues.add(createIssue("ObserverIdentified", LINE_NUMBER, classNodeInExamination.getFileName(), classNodeInExamination.getClassName(), infoMessage, options.get("ObserverIdentified")));
+                                issues.add(new Issue("ObserverIdentified", classNodeInExamination, LINE_NUMBER, options, infoMessage));
                             }
                         }
                     }
@@ -79,9 +79,5 @@ public class ObserverPatternRule implements Rule {
 
     public boolean stringContainsItemFromList (String inputStr, String[] items) {
         return inputStr.matches(".*(" + String.join("|", items) + ").*");
-    }
-
-    public Issue createIssue (String rule, int line, String fileName, String className, String message, String enumCatch) {
-        return new Issue(rule, line, fileName, className, message, Severity.valueOf(enumCatch));
     }
 }

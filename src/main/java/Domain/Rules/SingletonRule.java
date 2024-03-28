@@ -27,9 +27,7 @@ public class SingletonRule implements Rule {
             if (hasFieldOfOwnType(classNode)
                     && hasStaticMethodReturningOwnType(classNode)
                     && hasNoPublicConstructor(classNode)) {
-                Issue issue = new Issue(ruleName, line, classNode.getFileName(),
-                        classNode.getClassName(), message,
-                        Severity.valueOf(options.get("severity")));
+                Issue issue = new Issue(ruleName, classNode, line, options, message);
                 issues.add(issue);
             }
         }
