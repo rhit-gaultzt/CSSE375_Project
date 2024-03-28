@@ -13,13 +13,9 @@ import Domain.ClassNameChecks.ClassNameStartsWithCapital;
 import Domain.Rules.DependencyInversionPrincipleRule;
 import Domain.Rules.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class Main {
 
@@ -38,7 +34,8 @@ public class Main {
 
     public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader) throws IOException {
         List<Rule> rules = setupRules();
-        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(args);
+        String[] classNames = (new CLIGetClasses()).getClasses(args);
+        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classNames);
         ClassReader classReader = new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
