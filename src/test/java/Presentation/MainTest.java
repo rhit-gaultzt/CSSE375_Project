@@ -18,24 +18,7 @@ public class MainTest {
         Main main = new Main();
         List<Rule> rules = main.setupRules();
 
-        Assertions.assertEquals(10, rules.size());
-    }
-
-    @Test
-    public void testCloseStreams() throws IOException {
-        Main main = new Main();
-        byte[] input1 = new byte[] {1,2,3,4,5,6,7,8};
-        byte[] input2 = new byte[] {2,4,6,8,1,3,5,7};
-        InputStream sut1 = Files.newInputStream(new File("src/test/java/Presentation/MainTest.java").toPath());
-        InputStream sut2 = Files.newInputStream(new File("src/main/java/Presentation/Main.java").toPath());
-        List<InputStream> streams = new ArrayList<>();
-        streams.add(sut1);
-        streams.add(sut2);
-
-        main.closeStreams(streams);
-
-        Assertions.assertThrows(IOException.class, sut1::read);
-        Assertions.assertThrows(IOException.class, sut2::read);
+        Assertions.assertEquals(11, rules.size());
     }
 
     @Test

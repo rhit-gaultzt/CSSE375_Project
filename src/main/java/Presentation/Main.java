@@ -38,10 +38,10 @@ public class Main {
 
     public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader) throws IOException {
         List<Rule> rules = setupRules();
-        HashMap<String, InputStream> classData = getClassStreams(args);
+        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(args);
         ClassReader classReader = new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
-        closeStreams(classData.values());
+        ClassStreamHandler.closeStreams(classData.values());
         return ruleHandler.applyRules();
     }
 
@@ -63,32 +63,5 @@ public class Main {
                 add(new ClassNameInvalidWords(new DictionaryAPIAdapter()));
             }}));
         }};
-    }
-
-    public HashMap<String, InputStream> getClassStreams(String[] filenames) throws IOException {
-        HashMap<String, InputStream> classData = new HashMap<>();
-        for (String c : filenames) {
-            if (c.endsWith(".jar")) {
-                JarFile jar = new JarFile(c);
-                Enumeration<JarEntry> jars = jar.entries();
-                while (jars.hasMoreElements()) {
-                    JarEntry j = jars.nextElement();
-                    if (j.getName().endsWith(".class")) {
-                        InputStream input = jar.getInputStream(j);
-                        classData.put(j.getName(),input);
-                    }
-                }
-            } else {
-                InputStream input = Files.newInputStream(new File(c).toPath());
-                classData.put(c,input);
-            }
-        }
-        return classData;
-    }
-
-    public void closeStreams(Collection<InputStream> streams) throws IOException {
-        for (InputStream s : streams) {
-            s.close();
-        }
     }
 }

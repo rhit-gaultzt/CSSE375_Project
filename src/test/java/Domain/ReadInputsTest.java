@@ -13,7 +13,7 @@ public class ReadInputsTest {
     public void testGetClassStreamsOfJar() throws IOException {
         String[] testFiles = new String[] {"testJar.jar"};
         Main main = new Main();
-        HashMap<String, InputStream> streams = main.getClassStreams(testFiles);
+        HashMap<String, InputStream> streams = ClassStreamHandler.getClassStreams(testFiles);
         Assertions.assertEquals(3, streams.size());
         Assertions.assertTrue(streams.containsKey("C.class"));
         Assertions.assertTrue(streams.containsKey("BasicClass.class"));
@@ -25,7 +25,7 @@ public class ReadInputsTest {
         String[] testFiles = new String[] {"target/classes/TestClasses/C.class",
                 "target/classes/TestClasses/BasicClass.class", "target/classes/TestClasses/BasicSingleton.class"};
         Main main = new Main();
-        HashMap<String, InputStream> streams = main.getClassStreams(testFiles);
+        HashMap<String, InputStream> streams = ClassStreamHandler.getClassStreams(testFiles);
         Assertions.assertEquals(3, streams.size());
         Assertions.assertTrue(streams.containsKey("target/classes/TestClasses/C.class"));
         Assertions.assertTrue(streams.containsKey("target/classes/TestClasses/BasicClass.class"));
@@ -37,7 +37,7 @@ public class ReadInputsTest {
         String[] testFiles = new String[] {"testJar.jar", "target/classes/TestClasses/mime.class",
                 "target/classes/TestClasses/symbolism.class"};
         Main main = new Main();
-        HashMap<String, InputStream> streams = main.getClassStreams(testFiles);
+        HashMap<String, InputStream> streams = ClassStreamHandler.getClassStreams(testFiles);
         Assertions.assertEquals(5, streams.size());
         Assertions.assertTrue(streams.containsKey("C.class"));
         Assertions.assertTrue(streams.containsKey("BasicClass.class"));
