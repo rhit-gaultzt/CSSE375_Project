@@ -8,4 +8,9 @@ public class VarInsnNodeASM implements VarInsnNode {
     public VarInsnNodeASM(org.objectweb.asm.tree.VarInsnNode asmVarInsnNode) {
         this.asmVarInsnNode = asmVarInsnNode;
     }
+
+    @Override
+    public int getVarIndex() {
+        return asmVarInsnNode.var;
+    }
 }

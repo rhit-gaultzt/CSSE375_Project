@@ -56,6 +56,7 @@ public class Main {
             add(new SingletonRule());
             add(new ObserverPatternRule());
             add(new FlowChecker());
+            add(new SwitchRule());
             add(new ClassNameRule(new ArrayList<ClassNameCheck>() {{
                 add(new ClassNameStartsWithCapital());
                 add(new ClassNameInvalidCharacters());

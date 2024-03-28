@@ -26,3 +26,5 @@ hs_err_pid*
 **/.metadata/*
 
 target/*
+
+dependencies.png
