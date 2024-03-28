@@ -10,6 +10,7 @@ public interface AbstractInsnNode {
     boolean isFieldInsnNode();
     FieldInsnNode getFieldInsnNode();
     boolean isJumpNode();
+    JumpNode getJumpNode();
     boolean isSwitchNode();
-
+    boolean isIfNode();
 }
