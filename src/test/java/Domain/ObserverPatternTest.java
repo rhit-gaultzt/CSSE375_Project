@@ -19,18 +19,6 @@ public class ObserverPatternTest {
     public final static String[] listForNotify = new String[]{"observer", "inform", "notify", "tell", "advise", "alert", "warn", "report", "communicate", "send"};
 
     @Test
-    public void addIssueDepInvPrincipleInfo () {
-        ObserverPatternRule rule = new ObserverPatternRule();
-        Issue expected = new Issue("ObserverIdentified", -1, "class.java", "class", "Observer Pattern Found", Severity.INFO);
-        Issue actual = rule.createIssue("ObserverIdentified", -1, "class.java", "class", "Observer Pattern Found", "INFO");
-
-        Assertions.assertEquals(expected.rule, actual.rule);
-        Assertions.assertEquals(expected.file, actual.file);
-        Assertions.assertEquals(expected.classValue, actual.classValue);
-        Assertions.assertEquals(expected.message, actual.message);
-    }
-
-    @Test
     public void methodContainsItemFromListAddOneTest () {
         ObserverPatternRule rule = new ObserverPatternRule();
 

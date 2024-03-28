@@ -188,14 +188,14 @@ public class VariableNameConventionTest {
                 field1_2, field1_3, field2_1, field2_2, field2_3, field3_1,
                 field3_2, field3_3);
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertTrue(issues.get(0).message.contains("example2"));
-        Assertions.assertTrue(issues.get(1).message.contains("EXAMPLE_1"));
-        Assertions.assertTrue(issues.get(2).message.contains("exampleVar"));
-        Assertions.assertTrue(issues.get(3).message.contains("EXAMPLE_VAR1"));
-        Assertions.assertEquals(Severity.ERROR, issues.get(0).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(1).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(2).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(3).severity);
+        Assertions.assertTrue(issues.get(0).getMessage().contains("example2"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("EXAMPLE_1"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("exampleVar"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("EXAMPLE_VAR1"));
+        Assertions.assertEquals(Severity.ERROR, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(2).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(3).getSeverity());
     }
 
 
@@ -370,14 +370,14 @@ public class VariableNameConventionTest {
                 field1_2, field1_3, field2_1, field2_2, field2_3, field3_1,
                 field3_2, field3_3);
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertTrue(issues.get(0).message.contains("Example2"));
-        Assertions.assertTrue(issues.get(1).message.contains("example"));
-        Assertions.assertTrue(issues.get(2).message.contains("ExampleVar2"));
-        Assertions.assertTrue(issues.get(3).message.contains("example_var1"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(2).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(3).severity);
+        Assertions.assertTrue(issues.get(0).getMessage().contains("Example2"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("example"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("ExampleVar2"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("example_var1"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(2).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(3).getSeverity());
     }
 
 
@@ -539,16 +539,16 @@ public class VariableNameConventionTest {
                 field2_1_1, field2_1_2);
 
         Assertions.assertEquals(5, issues.size());
-        Assertions.assertTrue(issues.get(0).message.contains("nice_variable"));
-        Assertions.assertTrue(issues.get(1).message.contains("NICE"));
-        Assertions.assertTrue(issues.get(2).message.contains("EXAMPLE_2"));
-        Assertions.assertTrue(issues.get(3).message.contains("NiceExampleVarName"));
-        Assertions.assertTrue(issues.get(4).message.contains("Example"));
-        Assertions.assertEquals(Severity.ERROR, issues.get(0).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(1).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(2).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(3).severity);
-        Assertions.assertEquals(Severity.ERROR, issues.get(4).severity);
+        Assertions.assertTrue(issues.get(0).getMessage().contains("nice_variable"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("NICE"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("EXAMPLE_2"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("NiceExampleVarName"));
+        Assertions.assertTrue(issues.get(4).getMessage().contains("Example"));
+        Assertions.assertEquals(Severity.ERROR, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(2).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(3).getSeverity());
+        Assertions.assertEquals(Severity.ERROR, issues.get(4).getSeverity());
     }
 
 
@@ -710,14 +710,14 @@ public class VariableNameConventionTest {
                 field2_1_1, field2_1_2);
 
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertTrue(issues.get(0).message.contains("NICE"));
-        Assertions.assertTrue(issues.get(1).message.contains("EXAMPLE_2"));
-        Assertions.assertTrue(issues.get(2).message.contains("NiceExampleVarName"));
-        Assertions.assertTrue(issues.get(3).message.contains("Example"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(2).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(3).severity);
+        Assertions.assertTrue(issues.get(0).getMessage().contains("NICE"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("EXAMPLE_2"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("NiceExampleVarName"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("Example"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(2).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(3).getSeverity());
     }
 
 
@@ -741,20 +741,20 @@ public class VariableNameConventionTest {
         // Verify
         Assertions.assertEquals(14, issues.size());
 
-        Assertions.assertTrue(issues.get( 0).message.contains("InvalidVariable1"));
-        Assertions.assertTrue(issues.get( 1).message.contains("invalid_variable2"));
-        Assertions.assertTrue(issues.get( 2).message.contains("invalidVariable_3"));
-        Assertions.assertTrue(issues.get( 3).message.contains("InvalidVariable4"));
-        Assertions.assertTrue(issues.get( 4).message.contains("invalid_variable5"));
-        Assertions.assertTrue(issues.get( 5).message.contains("invalidVariable_6"));
-        Assertions.assertTrue(issues.get( 6).message.contains("BadExample1"));
-        Assertions.assertTrue(issues.get( 7).message.contains("BAD_EXAMPLE_2"));
-        Assertions.assertTrue(issues.get( 8).message.contains("invalid_local_variable"));
-        Assertions.assertTrue(issues.get( 9).message.contains("InvalidLocalVariable"));
-        Assertions.assertTrue(issues.get(10).message.contains("invalidLocal_Variable"));
-        Assertions.assertTrue(issues.get(11).message.contains("invalid_local_variable"));
-        Assertions.assertTrue(issues.get(12).message.contains("InvalidLocalVariable"));
-        Assertions.assertTrue(issues.get(13).message.contains("invalidLocal_Variable"));
+        Assertions.assertTrue(issues.get( 0).getMessage().contains("InvalidVariable1"));
+        Assertions.assertTrue(issues.get( 1).getMessage().contains("invalid_variable2"));
+        Assertions.assertTrue(issues.get( 2).getMessage().contains("invalidVariable_3"));
+        Assertions.assertTrue(issues.get( 3).getMessage().contains("InvalidVariable4"));
+        Assertions.assertTrue(issues.get( 4).getMessage().contains("invalid_variable5"));
+        Assertions.assertTrue(issues.get( 5).getMessage().contains("invalidVariable_6"));
+        Assertions.assertTrue(issues.get( 6).getMessage().contains("BadExample1"));
+        Assertions.assertTrue(issues.get( 7).getMessage().contains("BAD_EXAMPLE_2"));
+        Assertions.assertTrue(issues.get( 8).getMessage().contains("invalid_local_variable"));
+        Assertions.assertTrue(issues.get( 9).getMessage().contains("InvalidLocalVariable"));
+        Assertions.assertTrue(issues.get(10).getMessage().contains("invalidLocal_Variable"));
+        Assertions.assertTrue(issues.get(11).getMessage().contains("invalid_local_variable"));
+        Assertions.assertTrue(issues.get(12).getMessage().contains("InvalidLocalVariable"));
+        Assertions.assertTrue(issues.get(13).getMessage().contains("invalidLocal_Variable"));
     }
 
 

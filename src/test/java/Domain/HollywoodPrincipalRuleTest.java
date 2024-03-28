@@ -449,18 +449,18 @@ public class HollywoodPrincipalRuleTest {
 
         // Verify
         Assertions.assertEquals(3, issues.size());
-        Assertions.assertEquals("class4", issues.get(0).classValue);
-        Assertions.assertEquals("class3", issues.get(1).classValue);
-        Assertions.assertEquals("class2", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("class3"));
-        Assertions.assertTrue(issues.get(0).message.contains("class2"));
-        Assertions.assertTrue(issues.get(1).message.contains("class4"));
-        Assertions.assertTrue(issues.get(1).message.contains("class2"));
-        Assertions.assertTrue(issues.get(2).message.contains("class3"));
-        Assertions.assertTrue(issues.get(2).message.contains("class4"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(2).severity);
+        Assertions.assertEquals("class4", issues.get(0).getClassValue());
+        Assertions.assertEquals("class3", issues.get(1).getClassValue());
+        Assertions.assertEquals("class2", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class3"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class2"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class4"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class2"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class3"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class4"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(2).getSeverity());
 
         EasyMock.verify(options, class1, class2, class3, class4, method1_1,
                 method1_2, method2_1, method2_2, method3_1, method3_2,
@@ -685,18 +685,18 @@ public class HollywoodPrincipalRuleTest {
 
         // Verify
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertEquals("class4", issues.get(0).classValue);
-        Assertions.assertEquals("class3", issues.get(1).classValue);
-        Assertions.assertEquals("class2", issues.get(2).classValue);
-        Assertions.assertEquals("class1", issues.get(3).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("class3"));
-        Assertions.assertTrue(issues.get(1).message.contains("class4"));
-        Assertions.assertTrue(issues.get(2).message.contains("class1"));
-        Assertions.assertTrue(issues.get(3).message.contains("class2"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(2).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(3).severity);
+        Assertions.assertEquals("class4", issues.get(0).getClassValue());
+        Assertions.assertEquals("class3", issues.get(1).getClassValue());
+        Assertions.assertEquals("class2", issues.get(2).getClassValue());
+        Assertions.assertEquals("class1", issues.get(3).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class3"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class4"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class1"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("class2"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(2).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(3).getSeverity());
 
         EasyMock.verify(options, class1, class2, class3, class4, method1_1,
                 method1_2, method2_1, method2_2, method3_1, method3_2,
@@ -870,12 +870,12 @@ public class HollywoodPrincipalRuleTest {
 
         // Verify
         Assertions.assertEquals(2, issues.size());
-        Assertions.assertEquals("class2", issues.get(0).classValue);
-        Assertions.assertEquals("class1", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("class1"));
-        Assertions.assertTrue(issues.get(1).message.contains("class2"));
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(Severity.INFO, issues.get(1).severity);
+        Assertions.assertEquals("class2", issues.get(0).getClassValue());
+        Assertions.assertEquals("class1", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class1"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class2"));
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.INFO, issues.get(1).getSeverity());
 
         EasyMock.verify(options, class1, class2, class3, class4, method1_1,
                 method1_2, method2_1, method2_2, method3_1, method3_2,
@@ -1118,18 +1118,18 @@ public class HollywoodPrincipalRuleTest {
 
         // Verify
         Assertions.assertEquals(3, issues.size());
-        Assertions.assertEquals("class4", issues.get(0).classValue);
-        Assertions.assertEquals("class3", issues.get(1).classValue);
-        Assertions.assertEquals("class2", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("class3"));
-        Assertions.assertTrue(issues.get(0).message.contains("class2"));
-        Assertions.assertTrue(issues.get(1).message.contains("class4"));
-        Assertions.assertTrue(issues.get(1).message.contains("class2"));
-        Assertions.assertTrue(issues.get(2).message.contains("class3"));
-        Assertions.assertTrue(issues.get(2).message.contains("class4"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(Severity.WARNING, issues.get(2).severity);
+        Assertions.assertEquals("class4", issues.get(0).getClassValue());
+        Assertions.assertEquals("class3", issues.get(1).getClassValue());
+        Assertions.assertEquals("class2", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class3"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class2"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class4"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class2"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class3"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class4"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(Severity.WARNING, issues.get(2).getSeverity());
 
         EasyMock.verify(graph, options, class1, class2, class3, class4, method1_1,
                 method1_2, method2_1, method2_2, method3_1, method3_2,
@@ -1167,15 +1167,15 @@ public class HollywoodPrincipalRuleTest {
 
         // Verify
         Assertions.assertEquals(3, issues.size());
-        Assertions.assertEquals("TestClasses.HollywoodPrincipalE", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("HollywoodPrincipalC"));
-        Assertions.assertTrue(issues.get(0).message.contains("HollywoodPrincipalD"));
-        Assertions.assertEquals("TestClasses.HollywoodPrincipalC", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("HollywoodPrincipalE"));
-        Assertions.assertTrue(issues.get(1).message.contains("HollywoodPrincipalD"));
-        Assertions.assertEquals("TestClasses.HollywoodPrincipalD", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("HollywoodPrincipalE"));
-        Assertions.assertTrue(issues.get(2).message.contains("HollywoodPrincipalC"));
+        Assertions.assertEquals("TestClasses.HollywoodPrincipalE", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("HollywoodPrincipalC"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("HollywoodPrincipalD"));
+        Assertions.assertEquals("TestClasses.HollywoodPrincipalC", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("HollywoodPrincipalE"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("HollywoodPrincipalD"));
+        Assertions.assertEquals("TestClasses.HollywoodPrincipalD", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("HollywoodPrincipalE"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("HollywoodPrincipalC"));
     }
 
 
@@ -1199,15 +1199,15 @@ public class HollywoodPrincipalRuleTest {
 
         // Verify
         Assertions.assertEquals(3, issues.size());
-        Assertions.assertEquals("TestClasses.HollywoodPrincipalE", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("HollywoodPrincipalC"));
-        Assertions.assertTrue(issues.get(0).message.contains("HollywoodPrincipalD"));
-        Assertions.assertEquals("TestClasses.HollywoodPrincipalC", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("HollywoodPrincipalE"));
-        Assertions.assertTrue(issues.get(1).message.contains("HollywoodPrincipalD"));
-        Assertions.assertEquals("TestClasses.HollywoodPrincipalD", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("HollywoodPrincipalE"));
-        Assertions.assertTrue(issues.get(2).message.contains("HollywoodPrincipalC"));
+        Assertions.assertEquals("TestClasses.HollywoodPrincipalE", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("HollywoodPrincipalC"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("HollywoodPrincipalD"));
+        Assertions.assertEquals("TestClasses.HollywoodPrincipalC", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("HollywoodPrincipalE"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("HollywoodPrincipalD"));
+        Assertions.assertEquals("TestClasses.HollywoodPrincipalD", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("HollywoodPrincipalE"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("HollywoodPrincipalC"));
     }
 
 

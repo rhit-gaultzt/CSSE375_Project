@@ -62,30 +62,6 @@ public class DependencyInversionPrincipleTest {
     }
 
     @Test
-    public void addIssueSimilarClassWarning () {
-        DependencyInversionPrincipleRule rule = new DependencyInversionPrincipleRule();
-        Issue expected = new Issue("SimilarClassWarning", -1, "class.java", "class", "DependencyInversionPrinciple Violation", Severity.WARNING);
-        Issue actual = rule.createIssue("SimilarClassWarning", -1, "class.java", "class", "DependencyInversionPrinciple Violation", "WARNING");
-
-        Assertions.assertEquals(expected.rule, actual.rule);
-        Assertions.assertEquals(expected.file, actual.file);
-        Assertions.assertEquals(expected.classValue, actual.classValue);
-        Assertions.assertEquals(expected.message, actual.message);
-    }
-
-    @Test
-    public void addIssueDepInvPrincipleInfo () {
-        DependencyInversionPrincipleRule rule = new DependencyInversionPrincipleRule();
-        Issue expected = new Issue("DepInvPrincipleInfo", -1, "class.java", "class", "Dependency Inversion Principle found in class", Severity.INFO);
-        Issue actual = rule.createIssue("DepInvPrincipleInfo", -1, "class.java", "class", "Dependency Inversion Principle found in class", "INFO");
-
-        Assertions.assertEquals(expected.rule, actual.rule);
-        Assertions.assertEquals(expected.file, actual.file);
-        Assertions.assertEquals(expected.classValue, actual.classValue);
-        Assertions.assertEquals(expected.message, actual.message);
-    }
-
-    @Test
     public void testCompareMethods() {
         MethodNode methodOne = EasyMock.createMock(MethodNode.class);
         MethodNode methodTwo = EasyMock.createMock(MethodNode.class);

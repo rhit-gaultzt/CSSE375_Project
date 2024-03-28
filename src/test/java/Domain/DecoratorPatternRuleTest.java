@@ -343,15 +343,15 @@ public class DecoratorPatternRuleTest {
 
         // Verify
         Assertions.assertEquals(3, issues.size());
-        Assertions.assertEquals("class2", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("abstract decorator"));
-        Assertions.assertTrue(issues.get(0).message.contains("class1"));
-        Assertions.assertEquals("class4", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(1).message.contains("class1"));
-        Assertions.assertEquals("class3", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(2).message.contains("class1"));
+        Assertions.assertEquals("class2", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("abstract decorator"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class1"));
+        Assertions.assertEquals("class4", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class1"));
+        Assertions.assertEquals("class3", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class1"));
 
         EasyMock.verify(options, class1, class2, class3, class4, dummyClass1,
                 dummyClass2, method1_1, method1_2, method2_1, method2_2,
@@ -695,19 +695,19 @@ public class DecoratorPatternRuleTest {
 
         // Verify
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertEquals("class2", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("did not implement"));
-        Assertions.assertTrue(issues.get(0).message.contains("method2"));
-        Assertions.assertTrue(issues.get(0).message.contains("class1"));
-        Assertions.assertEquals("class2", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("abstract decorator"));
-        Assertions.assertTrue(issues.get(1).message.contains("class1"));
-        Assertions.assertEquals("class4", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(2).message.contains("class1"));
-        Assertions.assertEquals("class3", issues.get(3).classValue);
-        Assertions.assertTrue(issues.get(3).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(3).message.contains("class1"));
+        Assertions.assertEquals("class2", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("did not implement"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("method2"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class1"));
+        Assertions.assertEquals("class2", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("abstract decorator"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class1"));
+        Assertions.assertEquals("class4", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class1"));
+        Assertions.assertEquals("class3", issues.get(3).getClassValue());
+        Assertions.assertTrue(issues.get(3).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("class1"));
 
         EasyMock.verify(options, class1, class2, class3, class4, dummyClass1,
                 dummyClass2, method1_1, method1_2, method2_1, method2_2,
@@ -1052,19 +1052,19 @@ public class DecoratorPatternRuleTest {
 
         // Verify
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertEquals("class2", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("abstract decorator"));
-        Assertions.assertTrue(issues.get(0).message.contains("class1"));
-        Assertions.assertEquals("class4", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(1).message.contains("class1"));
-        Assertions.assertEquals("class3", issues.get(3).classValue);
-        Assertions.assertTrue(issues.get(3).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(3).message.contains("class1"));
-        Assertions.assertEquals("class3", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("did not call super"));
-        Assertions.assertTrue(issues.get(2).message.contains("method2"));
-        Assertions.assertTrue(issues.get(2).message.contains("class2"));
+        Assertions.assertEquals("class2", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("abstract decorator"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class1"));
+        Assertions.assertEquals("class4", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class1"));
+        Assertions.assertEquals("class3", issues.get(3).getClassValue());
+        Assertions.assertTrue(issues.get(3).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("class1"));
+        Assertions.assertEquals("class3", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("did not call super"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("method2"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class2"));
 
         EasyMock.verify(options, class1, class2, class3, class4, dummyClass1,
                 dummyClass2, method1_1, method1_2, method2_1, method2_2,
@@ -1408,16 +1408,16 @@ public class DecoratorPatternRuleTest {
 
         // Verify
         Assertions.assertEquals(3, issues.size());
-        Assertions.assertEquals("class2", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("abstract decorator"));
-        Assertions.assertTrue(issues.get(0).message.contains("class1"));
-        Assertions.assertEquals("class3", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("decorator"));
-        Assertions.assertTrue(issues.get(2).message.contains("class1"));
-        Assertions.assertEquals("class3", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("did not call super"));
-        Assertions.assertTrue(issues.get(1).message.contains("method2"));
-        Assertions.assertTrue(issues.get(1).message.contains("class2"));
+        Assertions.assertEquals("class2", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("abstract decorator"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("class1"));
+        Assertions.assertEquals("class3", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("decorator"));
+        Assertions.assertTrue(issues.get(2).getMessage().contains("class1"));
+        Assertions.assertEquals("class3", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("did not call super"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("method2"));
+        Assertions.assertTrue(issues.get(1).getMessage().contains("class2"));
 
         EasyMock.verify(options, class1, class2, class3, class4, dummyClass1,
                 dummyClass2, method1_1, method1_2, method2_1, method2_2,
@@ -1459,27 +1459,27 @@ public class DecoratorPatternRuleTest {
 
         // Verify
         Assertions.assertEquals(5, issues.size());
-        Assertions.assertEquals("TestClasses.DecoratorPattern.Wrapper", issues.get(0).classValue);
-        Assertions.assertTrue(issues.get(0).message.contains("method2"));
-        Assertions.assertTrue(issues.get(0).message.contains("ClassWrapping"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
+        Assertions.assertEquals("TestClasses.DecoratorPattern.Wrapper", issues.get(0).getClassValue());
+        Assertions.assertTrue(issues.get(0).getMessage().contains("method2"));
+        Assertions.assertTrue(issues.get(0).getMessage().contains("ClassWrapping"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
 
-        Assertions.assertEquals("TestClasses.DecoratorPattern.Wrapper", issues.get(1).classValue);
-        Assertions.assertTrue(issues.get(1).message.contains("TestClasses.DecoratorPattern.ClassWrapping"));
-        Assertions.assertEquals(Severity.INFO, issues.get(1).severity);
+        Assertions.assertEquals("TestClasses.DecoratorPattern.Wrapper", issues.get(1).getClassValue());
+        Assertions.assertTrue(issues.get(1).getMessage().contains("TestClasses.DecoratorPattern.ClassWrapping"));
+        Assertions.assertEquals(Severity.INFO, issues.get(1).getSeverity());
 
-        Assertions.assertEquals("TestClasses.DecoratorPattern.WrapperImplementation2", issues.get(2).classValue);
-        Assertions.assertTrue(issues.get(2).message.contains("TestClasses.DecoratorPattern.ClassWrapping"));
-        Assertions.assertEquals(Severity.INFO, issues.get(2).severity);
+        Assertions.assertEquals("TestClasses.DecoratorPattern.WrapperImplementation2", issues.get(2).getClassValue());
+        Assertions.assertTrue(issues.get(2).getMessage().contains("TestClasses.DecoratorPattern.ClassWrapping"));
+        Assertions.assertEquals(Severity.INFO, issues.get(2).getSeverity());
 
-        Assertions.assertEquals("TestClasses.DecoratorPattern.WrapperImplementation1", issues.get(3).classValue);
-        Assertions.assertTrue(issues.get(3).message.contains("method2"));
-        Assertions.assertTrue(issues.get(3).message.contains("TestClasses.DecoratorPattern.Wrapper"));
-        Assertions.assertEquals(Severity.WARNING, issues.get(3).severity);
+        Assertions.assertEquals("TestClasses.DecoratorPattern.WrapperImplementation1", issues.get(3).getClassValue());
+        Assertions.assertTrue(issues.get(3).getMessage().contains("method2"));
+        Assertions.assertTrue(issues.get(3).getMessage().contains("TestClasses.DecoratorPattern.Wrapper"));
+        Assertions.assertEquals(Severity.WARNING, issues.get(3).getSeverity());
 
-        Assertions.assertEquals("TestClasses.DecoratorPattern.WrapperImplementation1", issues.get(4).classValue);
-        Assertions.assertTrue(issues.get(4).message.contains("TestClasses.DecoratorPattern.ClassWrapping"));
-        Assertions.assertEquals(Severity.INFO, issues.get(4).severity);
+        Assertions.assertEquals("TestClasses.DecoratorPattern.WrapperImplementation1", issues.get(4).getClassValue());
+        Assertions.assertTrue(issues.get(4).getMessage().contains("TestClasses.DecoratorPattern.ClassWrapping"));
+        Assertions.assertEquals(Severity.INFO, issues.get(4).getSeverity());
     }
 
 

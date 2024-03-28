@@ -109,9 +109,9 @@ public class SwitchRuleTest {
 
         // Verify
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals("TestClasses.SwitchStatementClass", issues.get(0).classValue);
+        Assertions.assertEquals("TestClasses.SwitchStatementClass", issues.get(0).getClassValue());
         Assertions.assertEquals("method doSwitch has a switch statement or is comparing the same variable to many values",
-                                issues.get(0).message);
+                                issues.get(0).getMessage());
     }
 
     @Test
@@ -130,9 +130,9 @@ public class SwitchRuleTest {
 
         // Verify
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals("TestClasses.SwitchByIfsClass", issues.get(0).classValue);
+        Assertions.assertEquals("TestClasses.SwitchByIfsClass", issues.get(0).getClassValue());
         Assertions.assertEquals("method doSwitchIf has a switch statement or is comparing the same variable to many values",
-                issues.get(0).message);
+                issues.get(0).getMessage());
     }
 
     @Test
@@ -151,21 +151,21 @@ public class SwitchRuleTest {
 
         // Verify
         Assertions.assertEquals(4, issues.size());
-        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(0).classValue);
+        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(0).getClassValue());
         Assertions.assertEquals("method doSwitch has a switch statement or is comparing the same variable to many values",
-                issues.get(0).message);
+                issues.get(0).getMessage());
 
-        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(1).classValue);
+        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(1).getClassValue());
         Assertions.assertEquals("method doSwitchIf has a switch statement or is comparing the same variable to many values",
-                issues.get(1).message);
+                issues.get(1).getMessage());
 
-        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(2).classValue);
+        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(2).getClassValue());
         Assertions.assertEquals("method doSwitchBoth has a switch statement or is comparing the same variable to many values",
-                issues.get(2).message);
+                issues.get(2).getMessage());
 
-        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(3).classValue);
+        Assertions.assertEquals("TestClasses.ManySwitchesClass", issues.get(3).getClassValue());
         Assertions.assertEquals("method doSwitchBoth has a switch statement or is comparing the same variable to many values",
-                issues.get(3).message);
+                issues.get(3).getMessage());
     }
 
 
