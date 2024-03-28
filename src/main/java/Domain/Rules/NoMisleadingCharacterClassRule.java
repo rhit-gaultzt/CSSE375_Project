@@ -16,24 +16,19 @@ public class NoMisleadingCharacterClassRule implements Rule {
 
     @Override
     public Options getDefaultOptions() {
-        Options options = new Options(new ArrayList<String>(), new ArrayList<String>());
-        options.put("1 class", Severity.WARNING.toString());
-        options.put("1 method", Severity.WARNING.toString());
-        options.put("1 field", Severity.WARNING.toString());
-        options.put("0 class", Severity.WARNING.toString());
-        options.put("0 method", Severity.WARNING.toString());
-        options.put("0 field", Severity.WARNING.toString());
-        options.put("I class", Severity.INFO.toString());
-        options.put("I method", Severity.INFO.toString());
-        options.put("I field", Severity.INFO.toString());
-        options.put("l class", Severity.INFO.toString());
-        options.put("l method", Severity.INFO.toString());
-        options.put("l field", Severity.INFO.toString());
-        options.put("O class", Severity.INFO.toString());
-        options.put("O method", Severity.INFO.toString());
-        options.put("O field", Severity.INFO.toString());
+        Options options = new Options(new ArrayList<>(), new ArrayList<>());
+        addOptions(new String[] {"1", "0"}, options, Severity.WARNING);
+        addOptions(new String[] {"I", "l", "O"}, options, Severity.INFO);
 
         return options;
+    }
+
+    private void addOptions(String[] symbols, Options options, Severity warning) {
+        for (String i : symbols) {
+            options.put(i + " class", warning.toString());
+            options.put(i + " method", warning.toString());
+            options.put(i + " field", warning.toString());
+        }
     }
 
     @Override
@@ -60,44 +55,21 @@ public class NoMisleadingCharacterClassRule implements Rule {
 
     public List<Issue> stringChecker (String name, String type, int line, String fileName, String className, Options options) {
         List<Issue> issues = new ArrayList<>();
-        if (name.contains("1")) {
-            String message = "Number 1 was found within " + type + " name " + "\"" + name + "\"";
-            String enumCatch = options.get("1 " + type);
-            issues.add(createIssue(line, fileName, className, message, enumCatch));
-        }
-        if (name.contains("I")) {
-            String message = "Uppercase I was found within " + type + " name " + "\"" + name + "\"";
-            String enumCatch = options.get("I " + type);
-            issues.add(createIssue(line, fileName, className, message, enumCatch));
-        }
-        if (name.contains("l")) {
-            String message = "Lowercase l was found within " + type + " name " + "\"" + name + "\"";
-            String enumCatch = options.get("l " + type);
-            issues.add(createIssue(line, fileName, className, message, enumCatch));
-        }
-        if (name.contains("0")) {
-            String message = "Number 0 was found within " + type + " name " + "\"" + name + "\"";
-            String enumCatch = options.get("0 " + type);
-            issues.add(createIssue(line, fileName, className, message, enumCatch));
-        }
-        if (name.contains("O")) {
-            String message = "Uppercase O was found within " + type + " name " + "\"" + name + "\"";
-            String enumCatch = options.get("O " + type);
-            issues.add(createIssue(line, fileName, className, message, enumCatch));
+        final String[] symbols = {"1", "I", "l", "0", "O"};
+        final String[] variants = {"Number", "Uppercase", "Lowercase", "Number", "Uppercase"};
+
+        for (int i=0; i<symbols.length; i++) {
+            if (name.contains(symbols[i])) {
+                String message = variants[i] + " " + symbols[i] + " was found within " + type + " name \"" + name + "\"";
+                String enumCatch = options.get(symbols[i] + " " + type);
+                issues.add(createIssue(line, fileName, className, message, enumCatch));
+            }
         }
         return issues;
 
     }
 
     public Issue createIssue (int line, String fileName, String className, String message, String enumCatch) {
-        if (enumCatch.equals("INFO")) {
-            return new Issue(RULE, line, fileName, className, message, Severity.INFO);
-        } else if (enumCatch.equals("WARNING")) {
-            return new Issue(RULE, line, fileName, className, message, Severity.WARNING);
-        } else if (enumCatch.equals("ERROR")) {
-            return new Issue(RULE, line, fileName, className, message, Severity.ERROR);
-        } else {
-            return new Issue(RULE, line, fileName, className, message, Severity.SUPPRESS);
-        }
+        return new Issue(RULE, line, fileName, className, message, Severity.valueOf(enumCatch));
     }
 }
