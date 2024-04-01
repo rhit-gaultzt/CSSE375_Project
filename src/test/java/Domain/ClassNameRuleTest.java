@@ -51,7 +51,7 @@ public class ClassNameRuleTest {
 
         // Verify - className is not capital so should have issue
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ClassNameRuleTest {
 
         // Verify - className does have invalid character - so should have issue
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -99,9 +99,9 @@ public class ClassNameRuleTest {
 
         // Verify - className does have 3 invalid characters - so should have s issue
         assertEquals(3, issues.size());
-        assertEquals(expectedMessage1, issues.get(0).message);
-        assertEquals(expectedMessage2, issues.get(1).message);
-        assertEquals(expectedMessage3, issues.get(2).message);
+        assertEquals(expectedMessage1, issues.get(0).getMessage());
+        assertEquals(expectedMessage2, issues.get(1).getMessage());
+        assertEquals(expectedMessage3, issues.get(2).getMessage());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class ClassNameRuleTest {
         // Verify - className is not noun - issue
         EasyMock.verify(dictionary);
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -229,7 +229,7 @@ public class ClassNameRuleTest {
         // Verify - className is not verb - issue
         EasyMock.verify(dictionary);
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -293,7 +293,7 @@ public class ClassNameRuleTest {
         // Verify - className is not word - issue
         EasyMock.verify(dictionary);
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -419,7 +419,7 @@ public class ClassNameRuleTest {
         // Verify - className is not valid noun or verb - has issue
         EasyMock.verify(dictionary);
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -450,7 +450,7 @@ public class ClassNameRuleTest {
         // Verify - className is not valid - 1 issue
         EasyMock.verify(dictionary);
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -521,7 +521,7 @@ public class ClassNameRuleTest {
         // Verify - className has invalid word - 1 issue
         EasyMock.verify(dictionary);
         assertEquals(1, issues.size());
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -580,7 +580,7 @@ public class ClassNameRuleTest {
         classNodes.put(fullName2, classNode2);
         Issue issue = new Issue();
         String message = "this is a message";
-        issue.message = message;
+        issue.setMessage(message);
         List<Issue> check1Issues = new ArrayList<>();
         check1Issues.add(issue);
         String ruleName = "ClassNameRule";
@@ -601,12 +601,12 @@ public class ClassNameRuleTest {
         // Verify - has 1 issue with all information
         EasyMock.verify(check1, check2, classNode1, classNode2);
         assertEquals(1, issues.size());
-        assertEquals(message, issues.get(0).message);
-        assertEquals(Severity.WARNING, issues.get(0).severity);
-        assertEquals(ruleName, issues.get(0).rule);
-        assertEquals(fullName1, issues.get(0).classValue);
-        assertEquals(fileName1, issues.get(0).file);
-        assertEquals(-1, issues.get(0).line);
+        assertEquals(message, issues.get(0).getMessage());
+        assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        assertEquals(ruleName, issues.get(0).getRule());
+        assertEquals(fullName1, issues.get(0).getClassValue());
+        assertEquals(fileName1, issues.get(0).getFile());
+        assertEquals(-1, issues.get(0).getLine());
     }
 
     @Test
@@ -758,11 +758,11 @@ public class ClassNameRuleTest {
 
         // Verify - starts without capital
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -804,17 +804,17 @@ public class ClassNameRuleTest {
 
         // Verify - starts with capital and is not a verb
         Assertions.assertEquals(2, issues.size());
-        Assertions.assertEquals(expectedMessage1, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage1, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
 
-        Assertions.assertEquals(expectedMessage2, issues.get(1).message);
-        Assertions.assertEquals(-1, issues.get(1).line);
-        Assertions.assertEquals(className, issues.get(1).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(fileName, issues.get(1).file);
+        Assertions.assertEquals(expectedMessage2, issues.get(1).getMessage());
+        Assertions.assertEquals(-1, issues.get(1).getLine());
+        Assertions.assertEquals(className, issues.get(1).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(1).getFile());
     }
 
     @Test

@@ -39,25 +39,12 @@ public class FlowChecker implements Rule {
                     }
                 }
                 if (countOfSwitchOrJump > JUMP_SWITCH_THRESHOLD) {
-                    String fileName = classNode.getFileName();
                     String className = classNode.getClassName();
                     String message = "Method \"" + method.getName() + "\" within class \"" + className + "\" contains too many jumps or switches. Consider narrowing them down or creating new methods. ";
-                    issues.add(createIssue("TooManyJumpsAndSwitches", -1, fileName, className, message, options.get("TooManyJumpsAndSwitches")));
+                    issues.add(new Issue("TooManyJumpsAndSwitches", classNode, -1, options, message));
                 }
             }
         }
         return issues;
-    }
-
-    public Issue createIssue (String rule, int line, String fileName, String className, String message, String enumCatch) {
-        if (enumCatch.equals("INFO")) {
-            return new Issue(rule, line, fileName, className, message, Severity.INFO);
-        } else if (enumCatch.equals("WARNING")) {
-            return new Issue(rule, line, fileName, className, message, Severity.WARNING);
-        } else if (enumCatch.equals("ERROR")) {
-            return new Issue(rule, line, fileName, className, message, Severity.ERROR);
-        } else {
-            return new Issue(rule, line, fileName, className, message, Severity.SUPPRESS);
-        }
     }
 }

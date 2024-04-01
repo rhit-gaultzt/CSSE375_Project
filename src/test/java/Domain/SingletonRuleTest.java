@@ -272,11 +272,11 @@ public class SingletonRuleTest {
         // Verify
         EasyMock.verify(classNode, fieldNode, methodNode, constructorNode);
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(classFile, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(classFile, issues.get(0).getFile());
     }
 
     @Test
@@ -395,17 +395,17 @@ public class SingletonRuleTest {
                 methodNode2_1, methodNode2_2, constructorNode2);
         Assertions.assertEquals(2, issues.size());
 
-        Assertions.assertEquals(expectedMessage, issues.get(1).message);
-        Assertions.assertEquals(-1, issues.get(1).line);
-        Assertions.assertEquals(className1, issues.get(1).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(1).severity);
-        Assertions.assertEquals(classFile1, issues.get(1).file);
+        Assertions.assertEquals(expectedMessage, issues.get(1).getMessage());
+        Assertions.assertEquals(-1, issues.get(1).getLine());
+        Assertions.assertEquals(className1, issues.get(1).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(1).getSeverity());
+        Assertions.assertEquals(classFile1, issues.get(1).getFile());
 
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className2, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(classFile2, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className2, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(classFile2, issues.get(0).getFile());
     }
 
     @Test
@@ -458,11 +458,11 @@ public class SingletonRuleTest {
 
         // Verify - is a singleton
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -482,11 +482,11 @@ public class SingletonRuleTest {
 
         // Verify - is a singleton
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -506,11 +506,11 @@ public class SingletonRuleTest {
 
         // Verify - is a singleton
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -530,11 +530,11 @@ public class SingletonRuleTest {
 
         // Verify - is a singleton
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -571,11 +571,11 @@ public class SingletonRuleTest {
 
         // Verify - is a singleton
         Assertions.assertEquals(1, issues.size());
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(-1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(-1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
 

@@ -1,0 +1,24 @@
+VariableNameConventionRule:
+  severity: ERROR
+  variable: CAMEL
+  static: SCREAMING_SNAKE
+HollywoodPrincipleRule:
+  severity: WARNING
+ClassNameRule:
+  severity: INFO
+  allowNoun: True
+  allowVerb: True
+  allowAnyWord: True
+  allowAnything: False
+PrincipleLeastKnowledgeRule:
+  severity: WARNING
+  whitelistedPackage1: java.util
+  whitelistedPackage2: java.lang
+  whitelistedPackage3: Data.JavaByteCodeAdapter
+  whitelistedClass1: Domain.Severity
+SingletonRule:
+  severity: WARNING
+DecoratorPatternRule:
+  severity: INFO
+  missingMethodSeverity: WARNING
+  missingSuperCallSeverity: WARNING

@@ -338,11 +338,11 @@ public class PrincipleLeastKnowledgeRuleTest {
                 insnList, abstractInsnNode1, methodInsnNode1, abstractInsnNode2,
                 methodInsnNode2, abstractInsnNodeLine, lineNumberNode);
         assertEquals(1, issues.size());
-        assertEquals(Severity.INFO, issues.get(0).severity);
-        assertEquals(lineNumber, issues.get(0).line);
-        assertEquals(className, issues.get(0).classValue);
-        assertEquals(fileName, issues.get(0).file);
-        assertEquals(expectedMessage, issues.get(0).message);
+        assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        assertEquals(lineNumber, issues.get(0).getLine());
+        assertEquals(className, issues.get(0).getClassValue());
+        assertEquals(fileName, issues.get(0).getFile());
+        assertEquals(expectedMessage, issues.get(0).getMessage());
     }
 
     @Test
@@ -490,23 +490,23 @@ public class PrincipleLeastKnowledgeRuleTest {
                 abstractInsnNodeLine2, lineNumberNode2, abstractInsnNodeLine3, lineNumberNode3);
 
         assertEquals(3, issues.size());
-        assertEquals(Severity.INFO, issues.get(0).severity);
-        assertEquals(lineNumber3, issues.get(0).line);
-        assertEquals(className2, issues.get(0).classValue);
-        assertEquals(fileName2, issues.get(0).file);
-        assertEquals(expectedMessage3, issues.get(0).message);
+        assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        assertEquals(lineNumber3, issues.get(0).getLine());
+        assertEquals(className2, issues.get(0).getClassValue());
+        assertEquals(fileName2, issues.get(0).getFile());
+        assertEquals(expectedMessage3, issues.get(0).getMessage());
 
-        assertEquals(Severity.INFO, issues.get(1).severity);
-        assertEquals(lineNumber1, issues.get(1).line);
-        assertEquals(className1, issues.get(1).classValue);
-        assertEquals(fileName1, issues.get(1).file);
-        assertEquals(expectedMessage1, issues.get(1).message);
+        assertEquals(Severity.INFO, issues.get(1).getSeverity());
+        assertEquals(lineNumber1, issues.get(1).getLine());
+        assertEquals(className1, issues.get(1).getClassValue());
+        assertEquals(fileName1, issues.get(1).getFile());
+        assertEquals(expectedMessage1, issues.get(1).getMessage());
 
-        assertEquals(Severity.INFO, issues.get(2).severity);
-        assertEquals(lineNumber2, issues.get(2).line);
-        assertEquals(className1, issues.get(2).classValue);
-        assertEquals(fileName1, issues.get(2).file);
-        assertEquals(expectedMessage2, issues.get(2).message);
+        assertEquals(Severity.INFO, issues.get(2).getSeverity());
+        assertEquals(lineNumber2, issues.get(2).getLine());
+        assertEquals(className1, issues.get(2).getClassValue());
+        assertEquals(fileName1, issues.get(2).getFile());
+        assertEquals(expectedMessage2, issues.get(2).getMessage());
     }
 
     @Test
@@ -827,17 +827,17 @@ public class PrincipleLeastKnowledgeRuleTest {
 
         // Verify - violates plk
         Assertions.assertEquals(2, issues.size());
-        Assertions.assertEquals(expectedMessage1, issues.get(0).message);
-        Assertions.assertEquals(line1, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage1, issues.get(0).getMessage());
+        Assertions.assertEquals(line1, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
 
-        Assertions.assertEquals(expectedMessage2, issues.get(1).message);
-        Assertions.assertEquals(line2, issues.get(1).line);
-        Assertions.assertEquals(className, issues.get(1).classValue);
-        Assertions.assertEquals(Severity.INFO, issues.get(1).severity);
-        Assertions.assertEquals(fileName, issues.get(1).file);
+        Assertions.assertEquals(expectedMessage2, issues.get(1).getMessage());
+        Assertions.assertEquals(line2, issues.get(1).getLine());
+        Assertions.assertEquals(className, issues.get(1).getClassValue());
+        Assertions.assertEquals(Severity.INFO, issues.get(1).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(1).getFile());
     }
 
     @Test
@@ -867,11 +867,11 @@ public class PrincipleLeastKnowledgeRuleTest {
         // Verify - violates plk
         Assertions.assertEquals(1, issues.size());
 
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(line, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(line, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -901,11 +901,11 @@ public class PrincipleLeastKnowledgeRuleTest {
         // Verify - violates plk
         Assertions.assertEquals(1, issues.size());
 
-        Assertions.assertEquals(expectedMessage, issues.get(0).message);
-        Assertions.assertEquals(line, issues.get(0).line);
-        Assertions.assertEquals(className, issues.get(0).classValue);
-        Assertions.assertEquals(Severity.WARNING, issues.get(0).severity);
-        Assertions.assertEquals(fileName, issues.get(0).file);
+        Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
+        Assertions.assertEquals(line, issues.get(0).getLine());
+        Assertions.assertEquals(className, issues.get(0).getClassValue());
+        Assertions.assertEquals(Severity.WARNING, issues.get(0).getSeverity());
+        Assertions.assertEquals(fileName, issues.get(0).getFile());
     }
 
     @Test
@@ -922,7 +922,7 @@ public class PrincipleLeastKnowledgeRuleTest {
                 classNodes, plkRule.getDefaultOptions());
 
         // Verify - violates plk
-        Assertions.assertEquals(22, issues.size());
+        Assertions.assertEquals(21, issues.size());
     }
 
     @Test

@@ -30,8 +30,8 @@ public class CLIOutput implements Output {
         for (Severity severity : Severity.values()) total.put(severity, 0);
 
         issues.sort((Issue a, Issue b) -> {
-            String labelA = a.file + a.line + a.classValue;
-            String labelB = b.file + b.line + b.classValue;
+            String labelA = a.getFile() + a.getLine() + a.getClassValue();
+            String labelB = b.getFile() + b.getLine() + b.getClassValue();
             return labelA.compareTo(labelB);
         });
 
@@ -39,23 +39,23 @@ public class CLIOutput implements Output {
         String classname     = "";
         StringBuilder buffer = new StringBuilder();
         for (Issue issue: issues) {
-            if (issue.severity == Severity.SUPPRESS) continue;
-            if (!classname.equals(issue.classValue)) {
-                filename  = issue.file;
-                classname = issue.classValue;
+            if (issue.getSeverity() == Severity.SUPPRESS) continue;
+            if (!classname.equals(issue.getClassValue())) {
+                filename  = issue.getFile();
+                classname = issue.getClassValue();
                 buffer.append(String.format("\n%s%s (%s)%s\n", ANSI_LINE,
                         classname, filename, ANSI_RESET));
             }
 
-            String color = ansi_colors.get(issue.severity);
+            String color = ansi_colors.get(issue.getSeverity());
             buffer.append(String.format("\t%s%s%s%s %s%s", color,
-                    issue.severity, ANSI_RESET, ANSI_GREY, issue.rule, ANSI_RESET));
+                    issue.getSeverity(), ANSI_RESET, ANSI_GREY, issue.getRule(), ANSI_RESET));
 
-            if (issue.line != -1)
-                buffer.append(String.format(" (LN%s)", issue.line));
-            buffer.append(String.format("\n\t%s\n\n", issue.message));
+            if (issue.getLine() != -1)
+                buffer.append(String.format(" (LN%s)", issue.getLine()));
+            buffer.append(String.format("\n\t%s\n\n", issue.getMessage()));
 
-            total.put(issue.severity, total.get(issue.severity) + 1);
+            total.put(issue.getSeverity(), total.get(issue.getSeverity()) + 1);
         }
 
         // Final Results

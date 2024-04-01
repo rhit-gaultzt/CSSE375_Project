@@ -15,17 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 public class FlowCheckerTest {
-    @Test
-    public void testCreateIssue () {
-        FlowChecker rule = new FlowChecker();
-        Issue expected = new Issue("TooManyJumpsAndSwitches", -1, "Class.java", "Class", "Method \"Method\" within class \"Class\" contains too many jumps or switches. Consider narrowing them down or creating new methods. ", Severity.WARNING);
-        Issue actual = rule.createIssue("TooManyJumpsAndSwitches", -1, "Class.java", "Class", "Method \"Method\" within class \"Class\" contains too many jumps or switches. Consider narrowing them down or creating new methods. ", "WARNING");
-
-        Assertions.assertEquals(expected.rule, actual.rule);
-        Assertions.assertEquals(expected.file, actual.file);
-        Assertions.assertEquals(expected.classValue, actual.classValue);
-        Assertions.assertEquals(expected.message, actual.message);
-    }
 
 //    @Test
 //    public void testCheckerWithoutIssue () {

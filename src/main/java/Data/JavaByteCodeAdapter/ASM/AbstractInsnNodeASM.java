@@ -1,9 +1,19 @@
 package Data.JavaByteCodeAdapter.ASM;
 
 import Data.JavaByteCodeAdapter.*;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.Printer;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class AbstractInsnNodeASM implements AbstractInsnNode {
     private org.objectweb.asm.tree.AbstractInsnNode asmAbstractInsnNode;
+    private final List<Integer> conditionalJumps = Arrays.asList(Opcodes.IF_ICMPEQ, Opcodes.IF_ICMPNE,
+            Opcodes.IF_ICMPLT, Opcodes.IF_ICMPGE, Opcodes.IF_ICMPGT, Opcodes.IF_ICMPLE, Opcodes.IF_ACMPEQ,
+            Opcodes.IF_ACMPNE, Opcodes.IFNULL, Opcodes.IFNONNULL);
+    private final List<Integer> unconditionalJumps = Arrays.asList(Opcodes.GOTO, Opcodes.JSR,
+            Opcodes.RET, Opcodes.TABLESWITCH, Opcodes.LOOKUPSWITCH);
 
     public AbstractInsnNodeASM(org.objectweb.asm.tree.AbstractInsnNode asmAbstractInsnNode) {
         this.asmAbstractInsnNode = asmAbstractInsnNode;
@@ -63,12 +73,27 @@ public class AbstractInsnNodeASM implements AbstractInsnNode {
 
     @Override
     public boolean isJumpNode() {
-        return (this.asmAbstractInsnNode.getType() == org.objectweb.asm.tree.AbstractInsnNode.JUMP_INSN);
+
+        return this.conditionalJumps.contains(this.asmAbstractInsnNode.getOpcode()) ||
+                this.unconditionalJumps.contains(this.asmAbstractInsnNode.getOpcode());
+    }
+
+    @Override
+    public JumpNode getJumpNode() {
+        if (isJumpNode()) {
+            return new JumpNodeASM((org.objectweb.asm.tree.JumpInsnNode) asmAbstractInsnNode);
+        }
+        return null;
     }
 
     @Override
     public boolean isSwitchNode() {
         return (this.asmAbstractInsnNode.getType() == org.objectweb.asm.tree.AbstractInsnNode.LOOKUPSWITCH_INSN ||
                 this.asmAbstractInsnNode.getType() == org.objectweb.asm.tree.AbstractInsnNode.TABLESWITCH_INSN);
+    }
+
+    @Override
+    public boolean isIfNode() {
+        return this.conditionalJumps.contains(this.asmAbstractInsnNode.getOpcode());
     }
 }

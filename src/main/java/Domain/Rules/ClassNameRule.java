@@ -29,11 +29,7 @@ public class ClassNameRule implements Rule {
             for (ClassNameCheck check : classNameChecks) {
                 List<Issue> checkIssues = check.doClassNameCheck(shortClassName, options);
                 for (Issue issue : checkIssues) {
-                    issue.classValue = entry.getValue().getClassName();
-                    issue.file = entry.getValue().getFileName();
-                    issue.line = this.lineNumber;
-                    issue.rule = this.ruleName;
-                    issue.severity = Severity.valueOf(options.get("severity"));
+                    issue.update(this.ruleName, entry.getValue(), this.lineNumber, options);
                 }
                 issues.addAll(checkIssues);
             }

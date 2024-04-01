@@ -13,7 +13,7 @@ public class ClassNameStartsWithCapital implements ClassNameCheck {
         List<Issue> issues = new ArrayList<>();
         if (!Character.isUpperCase(className.charAt(0))) {
             Issue issue = new Issue();
-            issue.message = "class " + className + " does not begin with a capital letter";
+            issue.setMessage("class " + className + " does not begin with a capital letter");
             issues.add(issue);
         }
         return issues;

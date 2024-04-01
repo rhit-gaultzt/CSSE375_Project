@@ -7,6 +7,7 @@ import Domain.Issue;
 import Domain.Rule;
 import Domain.Severity;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class ObserverPatternRule implements Rule {
@@ -19,14 +20,14 @@ public class ObserverPatternRule implements Rule {
 
     @Override
     public Options getDefaultOptions() {
-        Options options = new Options(new ArrayList<String>(), new ArrayList<String>());
+        Options options = new Options(new ArrayList<>(), new ArrayList<>());
         options.put("ObserverIdentified", Severity.INFO.toString());
         return options;
     }
 
     @Override
     public List<Issue> apply (Map<String, ClassNode> classNodes, Options options) {
-        List<Issue> issues = new ArrayList<Issue>();
+        List<Issue> issues = new ArrayList<>();
 
         for (Map.Entry<String, ClassNode> node : classNodes.entrySet()) { // Loop through every class
             ClassNode classNode = node.getValue();
@@ -37,7 +38,7 @@ public class ObserverPatternRule implements Rule {
                         for (MethodNode observerMethod : classNodeInExamination.getMethods()) { // Loop through every method of observer
                             if (observerMethod.getName().contains("update")) { // If the class contains update
                                 String infoMessage = "Observer Pattern Found";
-                                issues.add(createIssue("ObserverIdentified", LINE_NUMBER, classNodeInExamination.getFileName(), classNodeInExamination.getClassName(), infoMessage, options.get("ObserverIdentified")));
+                                issues.add(new Issue("ObserverIdentified", classNodeInExamination, LINE_NUMBER, options, infoMessage));
                             }
                         }
                     }
@@ -48,24 +49,23 @@ public class ObserverPatternRule implements Rule {
     }
 
     public boolean findObservee (ClassNode node) {
-        Boolean[] foundValues = new Boolean[]{false, false, false};
+        return hasObserveeMethod(node, listForAdd) &&
+                hasObserveeMethod(node, listForRemove) &&
+                hasObserveeMethod(node, listForNotify);
+    }
 
+    private boolean hasObserveeMethod(ClassNode node, String[] listForType) {
         for (MethodNode method : node.getMethods()) {
-            if (stringContainsItemFromList(method.getName(), listForAdd) && methodContainsObserverArgument(method.getArgumentTypes())) {
-                foundValues[0] = true;
-            }
-            if (stringContainsItemFromList(method.getName(), listForRemove) && methodContainsObserverArgument(method.getArgumentTypes())) {
-                foundValues[1] = true;
-            }
-            if (stringContainsItemFromList(method.getName(), listForNotify) && methodContainsObserverArgument(method.getArgumentTypes())) {
-                foundValues[2] = true;
-            }
-
-            if (foundValues[0] && foundValues[1] && foundValues[2]) {
+            if (isObserveeMethod(method, listForType)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean isObserveeMethod(MethodNode method, String[] listForType) {
+        return stringContainsItemFromList(method.getName(), listForType) &&
+                methodContainsObserverArgument(method.getArgumentTypes());
     }
 
     public boolean methodContainsObserverArgument (List<ClassNode> arguments) {
@@ -78,18 +78,6 @@ public class ObserverPatternRule implements Rule {
     }
 
     public boolean stringContainsItemFromList (String inputStr, String[] items) {
-        return Arrays.stream(items).anyMatch(inputStr::contains);
-    }
-
-    public Issue createIssue (String rule, int line, String fileName, String className, String message, String enumCatch) {
-        if (enumCatch.equals("INFO")) {
-            return new Issue(rule, line, fileName, className, message, Severity.INFO);
-        } else if (enumCatch.equals("WARNING")) {
-            return new Issue(rule, line, fileName, className, message, Severity.WARNING);
-        } else if (enumCatch.equals("ERROR")) {
-            return new Issue(rule, line, fileName, className, message, Severity.ERROR);
-        } else {
-            return new Issue(rule, line, fileName, className, message, Severity.SUPPRESS);
-        }
+        return inputStr.matches(".*(" + String.join("|", items) + ").*");
     }
 }

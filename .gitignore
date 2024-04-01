@@ -25,4 +25,6 @@ hs_err_pid*
 **/.idea/*
 **/.metadata/*
 
-target/pit-reports/*
+target/*
+
+dependencies.png
