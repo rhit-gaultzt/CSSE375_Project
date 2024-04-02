@@ -40,14 +40,38 @@ public class MainTest {
     }
 
     @Test
-    public void testFindIssues() throws IOException {
+    public void testFindIssuesBasic() throws IOException {
         Main main = new Main();
         String[] files = { "target/classes/TestClasses/mime.class", "target/classes/TestClasses/symbolism.class" };
         List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"));
 
         Assertions.assertEquals(3, issues.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", issues.get(0).getRule());
+        Assertions.assertEquals(13, issues.get(0).getLine());
+        Assertions.assertEquals("method test makes call to TestClasses.C violating the Principle of Least Knowledge", issues.get(0).getMessage());
         Assertions.assertEquals("ClassNameRule", issues.get(1).getRule());
+        Assertions.assertEquals(-1, issues.get(1).getLine());
+        Assertions.assertEquals("class symbolism does not begin with a capital letter", issues.get(1).getMessage());
         Assertions.assertEquals("ClassNameRule", issues.get(2).getRule());
+        Assertions.assertEquals(-1, issues.get(2).getLine());
+        Assertions.assertEquals("class mime does not begin with a capital letter", issues.get(2).getMessage());
+    }
+
+    @Test
+    public void testFindIssuesWithSwitch() throws IOException {
+        Main main = new Main();
+        String[] files = { "target/classes/TestClasses/mime.class", "target/classes/TestClasses/SwitchStatementClass.class" };
+        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"));
+
+        Assertions.assertEquals(3, issues.size());
+        Assertions.assertEquals("PrincipleLeastKnowledgeRule", issues.get(0).getRule());
+        Assertions.assertEquals(13, issues.get(0).getLine());
+        Assertions.assertEquals("method test makes call to TestClasses.C violating the Principle of Least Knowledge", issues.get(0).getMessage());
+        Assertions.assertEquals("SwitchRule", issues.get(1).getRule());
+        Assertions.assertEquals(5, issues.get(1).getLine());
+        Assertions.assertEquals("method doSwitch has a switch statement or is comparing the same variable to many values", issues.get(1).getMessage());
+        Assertions.assertEquals("ClassNameRule", issues.get(2).getRule());
+        Assertions.assertEquals(-1, issues.get(2).getLine());
+        Assertions.assertEquals("class mime does not begin with a capital letter", issues.get(2).getMessage());
     }
 }

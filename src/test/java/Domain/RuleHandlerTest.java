@@ -1,9 +1,11 @@
 package Domain;
 
+import Data.JavaByteCodeAdapter.ASM.ClassReaderASM;
 import Data.JavaByteCodeAdapter.ClassNode;
 import Data.JavaByteCodeAdapter.ClassReader;
 import Data.Options;
 import Data.OptionsReaderYAML;
+import Presentation.Main;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -307,6 +310,77 @@ public class RuleHandlerTest {
         Assertions.assertEquals(new ArrayList<Issue>(){{
             add(issue1);
         }}, issues);
+    }
+
+    @Test
+    public void applyRulesIntegrationBasic() throws IOException {
+        // Record
+        Main main = new Main();
+        List<Rule> rules = main.setupRules();
+        String[] classnames = {"target/classes/TestClasses/mime.class"};
+        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
+        ClassReader classReader =  new ClassReaderASM();
+        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+
+        // Replay
+        List<Issue> actual = ruleHandler.applyRules();
+
+        // Verify
+        Assertions.assertEquals(2, actual.size());
+        Assertions.assertEquals("PrincipleLeastKnowledgeRule", actual.get(0).getRule());
+        Assertions.assertEquals(13, actual.get(0).getLine());
+        Assertions.assertEquals("method test makes call to TestClasses.C violating the Principle of Least Knowledge", actual.get(0).getMessage());
+        Assertions.assertEquals("ClassNameRule", actual.get(1).getRule());
+        Assertions.assertEquals(-1, actual.get(1).getLine());
+        Assertions.assertEquals("class mime does not begin with a capital letter", actual.get(1).getMessage());
+
+    }
+
+    @Test
+    public void applyRulesIntegrationMultiple() throws IOException {
+        // Record
+        Main main = new Main();
+        List<Rule> rules = main.setupRules();
+        String[] classnames = {"target/classes/TestClasses/mime.class", "target/classes/TestClasses/SwitchStatementClass.class"};
+        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
+        ClassReader classReader =  new ClassReaderASM();
+        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+
+        // Replay
+        List<Issue> actual = ruleHandler.applyRules();
+
+        // Verify
+        Assertions.assertEquals(3, actual.size());
+        Assertions.assertEquals("PrincipleLeastKnowledgeRule", actual.get(0).getRule());
+        Assertions.assertEquals(13, actual.get(0).getLine());
+        Assertions.assertEquals("method test makes call to TestClasses.C violating the Principle of Least Knowledge", actual.get(0).getMessage());
+        Assertions.assertEquals("SwitchRule", actual.get(1).getRule());
+        Assertions.assertEquals(5, actual.get(1).getLine());
+        Assertions.assertEquals("method doSwitch has a switch statement or is comparing the same variable to many values", actual.get(1).getMessage());
+        Assertions.assertEquals("ClassNameRule", actual.get(2).getRule());
+        Assertions.assertEquals(-1, actual.get(2).getLine());
+        Assertions.assertEquals("class mime does not begin with a capital letter", actual.get(2).getMessage());
+    }
+
+    @Test
+    public void applyRulesIntegrationNoRules() throws IOException {
+        // Record
+        Main main = new Main();
+        List<Rule> rules = main.setupRules();
+        String[] classnames = {};
+        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
+        ClassReader classReader =  new ClassReaderASM();
+        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+
+        // Replay
+        List<Issue> actual = ruleHandler.applyRules();
+
+        // Verify
+        Assertions.assertEquals(0, actual.size());
+
     }
 
 }
