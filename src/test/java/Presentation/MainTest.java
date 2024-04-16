@@ -15,14 +15,6 @@ import java.util.List;
 public class MainTest {
 
     @Test
-    public void testSetupRules() {
-        Main main = new Main();
-        List<Rule> rules = main.setupRules();
-
-        Assertions.assertEquals(11, rules.size());
-    }
-
-    @Test
     public void testCloseStreams() throws IOException {
         ClassStreamHandler streamHandler = new ClassStreamHandler();
         byte[] input1 = new byte[] {1,2,3,4,5,6,7,8};

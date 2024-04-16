@@ -313,15 +313,20 @@ public class RuleHandlerTest {
     }
 
     @Test
+    public void testGetDefaultRules() {
+        List<Rule> rules = RuleHandler.getDefaultRules();
+
+        Assertions.assertEquals(11, rules.size());
+    }
+
+    @Test
     public void applyRulesIntegrationBasic() throws IOException {
         // Record
-        Main main = new Main();
-        List<Rule> rules = main.setupRules();
         String[] classnames = {"target/classes/TestClasses/mime.class"};
         HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         ClassReader classReader =  new ClassReaderASM();
-        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+        RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
 
         // Replay
         List<Issue> actual = ruleHandler.applyRules();
@@ -337,16 +342,15 @@ public class RuleHandlerTest {
 
     }
 
+
     @Test
     public void applyRulesIntegrationMultiple() throws IOException {
         // Record
-        Main main = new Main();
-        List<Rule> rules = main.setupRules();
         String[] classnames = {"target/classes/TestClasses/mime.class", "target/classes/TestClasses/SwitchStatementClass.class"};
         HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         ClassReader classReader =  new ClassReaderASM();
-        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+        RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
 
         // Replay
         List<Issue> actual = ruleHandler.applyRules();
@@ -367,13 +371,11 @@ public class RuleHandlerTest {
     @Test
     public void applyRulesIntegrationNoRules() throws IOException {
         // Record
-        Main main = new Main();
-        List<Rule> rules = main.setupRules();
         String[] classnames = {};
         HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         ClassReader classReader =  new ClassReaderASM();
-        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+        RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
 
         // Replay
         List<Issue> actual = ruleHandler.applyRules();

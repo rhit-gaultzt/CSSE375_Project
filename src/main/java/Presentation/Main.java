@@ -33,32 +33,11 @@ public class Main {
     }
 
     public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader) throws IOException {
-        List<Rule> rules = setupRules();
         String[] classNames = (new CLIGetClasses()).getClasses(args);
         HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classNames);
         ClassReader classReader = new ClassReaderASM();
-        RuleHandler ruleHandler = new RuleHandler(rules, optionsReader, classData, classReader);
+        RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
         return ruleHandler.applyRules();
-    }
-
-    public List<Rule> setupRules() {
-        return new ArrayList<Rule>() {{
-            add(new DecoratorPatternRule());
-            add(new VariableNameConventionRule());
-            add(new HollywoodPrincipleRule(new GraphImplementationNidi()));
-            add(new PrincipleLeastKnowledgeRule());
-            add(new NoMisleadingCharacterClassRule());
-            add(new DependencyInversionPrincipleRule());
-            add(new SingletonRule());
-            add(new ObserverPatternRule());
-            add(new FlowChecker());
-            add(new SwitchRule());
-            add(new ClassNameRule(new ArrayList<ClassNameCheck>() {{
-                add(new ClassNameStartsWithCapital());
-                add(new ClassNameInvalidCharacters());
-                add(new ClassNameInvalidWords(new DictionaryAPIAdapter()));
-            }}));
-        }};
     }
 }
