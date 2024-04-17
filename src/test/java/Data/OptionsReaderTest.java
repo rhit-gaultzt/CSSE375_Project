@@ -5,41 +5,110 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class OptionsReaderTest {
 
-//    @Test
-//    public void testHasCorrectOptions() {
-//        // Record
-//        File file = EasyMock.mock(File.class);
-//        Yaml yaml = EasyMock.mock(Yaml.class);
-//        List<String> rules = new ArrayList<>();
-//        rules.add("VariableNameConventionRule");
-//        rules.add("HollywoodPrincipleRule");
-//        rules.add("ClassNameRule");
-//        rules.add("PrincipleLeastKnowledgeRule");
-//        rules.add("SingletonRule");
-//        rules.add("DecoratorPatternRule");
-//
-//        OptionsReaderYAML optionsReader = new OptionsReaderYAML(file, yaml);
-//
-//        // Replay
-//        EasyMock.replay(file, yaml);
-//        Map<String, Options> options = optionsReader.readOptions();
-//
-//
-//        // Verify
-//        Assertions.assertEquals(6, options.size());
-//        for (String rule : rules) {
-//            Assertions.assertTrue(options.containsKey(rule));
-//        }
-//        EasyMock.verify(file, yaml);
-//    }
+    @Test
+    public void testHasCorrectOptions() {
+        // Record
+        InputStream inputStream = EasyMock.mock(InputStream.class);
+        Yaml yaml = EasyMock.mock(Yaml.class);
+
+        Map<String, Object> expectedOptions = new HashMap<>();
+        expectedOptions.put("VariableNameConventionRule", new HashMap<String, String>());
+        expectedOptions.put("HollywoodPrincipleRule", new HashMap<String, String>());
+        expectedOptions.put("ClassNameRule", new HashMap<String, String>());
+        expectedOptions.put("PrincipleLeastKnowledgeRule", new HashMap<String, String>());
+        expectedOptions.put("SingletonRule", new HashMap<String, String>());
+        expectedOptions.put("DecoratorPatternRule", new HashMap<String, String>());
+
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML(inputStream, yaml);
+
+        EasyMock.expect(yaml.load(inputStream)).andReturn(expectedOptions);
+
+        // Replay
+        EasyMock.replay(inputStream, yaml);
+        Map<String, Options> options = optionsReader.readOptions();
+
+        // Verify
+        Assertions.assertEquals(6, options.size());
+        for (String rule : expectedOptions.keySet()) {
+            Assertions.assertTrue(options.containsKey(rule));
+        }
+        EasyMock.verify(inputStream, yaml);
+    }
+
+    @Test
+    public void testHasCorrectOptionAttributes() {
+        // Record
+        InputStream inputStream = EasyMock.mock(InputStream.class);
+        Yaml yaml = EasyMock.mock(Yaml.class);
+
+        Map<String, String> attributeValueMap = new HashMap<>();
+        attributeValueMap.put("severity", "ERROR");
+        attributeValueMap.put("variable", "CAMEL");
+        attributeValueMap.put("static", "SCREAMING_SNAKE");
+
+        Map<String, Object> expectedOptions = new HashMap<>();
+        expectedOptions.put("VariableNameConventionRule", attributeValueMap);
+        expectedOptions.put("HollywoodPrincipleRule", new HashMap<String, String>());
+
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML(inputStream, yaml);
+
+        EasyMock.expect(yaml.load(inputStream)).andReturn(expectedOptions);
+
+        // Replay
+        EasyMock.replay(inputStream, yaml);
+        Map<String, Options> options = optionsReader.readOptions();
+
+        // Verify
+        Options option = options.get("VariableNameConventionRule");
+        Assertions.assertEquals(3, option.attributes.size());
+        for (String attribute : attributeValueMap.keySet()) {
+            Assertions.assertTrue(option.hasKey(attribute));
+        }
+        EasyMock.verify(inputStream, yaml);
+    }
+
+    @Test
+    public void testHasCorrectOptionAttributeValues() {
+        // Record
+        InputStream inputStream = EasyMock.mock(InputStream.class);
+        Yaml yaml = EasyMock.mock(Yaml.class);
+
+        Map<String, String> attributeValueMap = new HashMap<>();
+        attributeValueMap.put("severity", "ERROR");
+        attributeValueMap.put("variable", "CAMEL");
+        attributeValueMap.put("static", "SCREAMING_SNAKE");
+
+        Map<String, Object> expectedOptions = new HashMap<>();
+        expectedOptions.put("VariableNameConventionRule", attributeValueMap);
+        expectedOptions.put("HollywoodPrincipleRule", new HashMap<String, String>());
+
+        OptionsReaderYAML optionsReader = new OptionsReaderYAML(inputStream, yaml);
+
+        EasyMock.expect(yaml.load(inputStream)).andReturn(expectedOptions);
+
+        // Replay
+        EasyMock.replay(inputStream, yaml);
+        Map<String, Options> options = optionsReader.readOptions();
+
+        // Verify
+        Options option = options.get("VariableNameConventionRule");
+        Assertions.assertEquals(3, option.attributes.size());
+        for (String attribute : attributeValueMap.keySet()) {
+            String expectedValue = attributeValueMap.get(attribute);
+            String actualValue = option.get(attribute);
+            Assertions.assertEquals(expectedValue, actualValue);
+        }
+        EasyMock.verify(inputStream, yaml);
+    }
 
     @Test
     public void testHasCorrectOptionsIntegration() {
