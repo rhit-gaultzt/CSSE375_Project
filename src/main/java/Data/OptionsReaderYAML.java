@@ -15,57 +15,64 @@ import java.util.Map;
 public class OptionsReaderYAML {
 
 
-    private final File file;
+    private final InputStream inputStream;
     private final Yaml yaml;
 
 
     public OptionsReaderYAML(String filename) {
-        this.file = new File(filename);
+        InputStream stream;
         this.yaml = new Yaml();
+        try {
+            stream = new FileInputStream(filename);
+        } catch (FileNotFoundException e) {
+            stream = null;
+            System.out.println("Using default config. " +
+                    "Make own config.YAML to modify.");
+        }
+
+        this.inputStream = stream;
     }
 
-    public OptionsReaderYAML(File file,  Yaml yaml) {
-        this.file = file;
+    public OptionsReaderYAML(InputStream inputStream, Yaml yaml) {
+        this.inputStream = inputStream;
         this.yaml = yaml;
     }
 
 
     public Map<String, Options> readOptions() {
         Map<String, Options> config = new HashMap<>();
-        try {
-            InputStream targetStream = new FileInputStream(this.file);
-            Map<String, Object> data = this.yaml.load(targetStream);
 
+        if (this.inputStream == null) {
+            return config;
+        }
 
-            for (String ruleKey : data.keySet()) {
-                if (!(data.get(ruleKey) instanceof Map))
-                    throw new Error("Error Parsing Config: \"" + ruleKey
-                            + "\" is not a valid rule config, must be map");
+        Map<String, Object> data = this.yaml.load(inputStream);
 
-                @SuppressWarnings("unchecked")
-                Map<String, Object> rule = (Map<String, Object>) data.get(ruleKey);
-                List<String> keys = new ArrayList<>();
-                List<String> values = new ArrayList<>();
+        for (String ruleKey : data.keySet()) {
+            if (!(data.get(ruleKey) instanceof Map))
+                throw new Error("Error Parsing Config: \"" + ruleKey
+                        + "\" is not a valid rule config, must be map");
 
-                for (String optionKey : rule.keySet()) {
-                    if (rule.get(optionKey) instanceof Map)
-                        throw new Error("Error Parsing Config: \"" + ruleKey + ":"
-                                + optionKey + "\" is not a valid rule"
-                                + " option, must be string.");
-                    if (rule.get(optionKey) instanceof List)
-                        throw new Error("Error Parsing Config: \"" + ruleKey + ":"
-                                + optionKey + "\" is not a valid rule"
-                                + " option, must be string.");
+            @SuppressWarnings("unchecked")
+            Map<String, Object> rule = (Map<String, Object>) data.get(ruleKey);
+            List<String> keys = new ArrayList<>();
+            List<String> values = new ArrayList<>();
 
-                    keys.add(optionKey);
-                    values.add(String.valueOf(rule.get(optionKey)));
-                }
+            for (String optionKey : rule.keySet()) {
+                if (rule.get(optionKey) instanceof Map)
+                    throw new Error("Error Parsing Config: \"" + ruleKey + ":"
+                            + optionKey + "\" is not a valid rule"
+                            + " option, must be string.");
+                if (rule.get(optionKey) instanceof List)
+                    throw new Error("Error Parsing Config: \"" + ruleKey + ":"
+                            + optionKey + "\" is not a valid rule"
+                            + " option, must be string.");
 
-                config.put(ruleKey, new Options(keys, values));
+                keys.add(optionKey);
+                values.add(String.valueOf(rule.get(optionKey)));
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Creating default config. " +
-                    "Make own config.YAML to modify.");
+
+            config.put(ruleKey, new Options(keys, values));
         }
 
 
