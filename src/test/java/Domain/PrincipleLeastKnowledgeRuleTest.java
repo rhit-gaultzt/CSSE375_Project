@@ -9,10 +9,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -53,7 +50,10 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(0);
+        EasyMock.expect(insnList.iterator()).andReturn(new Iterator<AbstractInsnNode>() {
+            public boolean hasNext() { return false; }
+            public AbstractInsnNode next() { return null; }
+        });
 
         // Replay
         EasyMock.replay(classNode, methodNode, insnList);
@@ -74,6 +74,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode classNode = EasyMock.mock(ClassNode.class);
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnListIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode = EasyMock.mock(MethodInsnNode.class);
 
@@ -87,21 +88,23 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(1).times(2);
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode);
+        EasyMock.expect(insnList.iterator()).andReturn(insnListIter);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(true);
+        EasyMock.expect(insnListIter.next()).andReturn(abstractInsnNode);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(false);
+        EasyMock.expect(abstractInsnNode.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode.getMethodInsnNode()).andReturn(methodInsnNode);
-        EasyMock.expect(methodInsnNode.isInitInsn()).andReturn(false);
         // method called is on this
         EasyMock.expect(methodInsnNode.getMethodOwner()).andReturn(classNode);
         EasyMock.expect(classNode.isValid()).andReturn(true);
 
         // Replay
-        EasyMock.replay(classNode, methodNode, insnList, abstractInsnNode, methodInsnNode);
+        EasyMock.replay(classNode, methodNode, insnList, abstractInsnNode, methodInsnNode, insnListIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling this so should be no issues
-        EasyMock.verify(classNode, methodNode, insnList, abstractInsnNode, methodInsnNode);
+        EasyMock.verify(classNode, methodNode, insnList, abstractInsnNode, methodInsnNode, insnListIter);
         assertEquals(0, issues.size());
     }
 
@@ -111,6 +114,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         Rule rule = new PrincipleLeastKnowledgeRule();
         Map<String, ClassNode> classNodes = new HashMap<>();
         Options options = new Options(new ArrayList<>(), new ArrayList<>());
+        Iterator<AbstractInsnNode> insnListIter = EasyMock.mock(Iterator.class);
 
         ClassNode classNode = EasyMock.mock(ClassNode.class);
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
@@ -136,23 +140,25 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(1).times(2);
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode);
+        EasyMock.expect(insnList.iterator()).andReturn(insnListIter);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(true);
+        EasyMock.expect(insnListIter.next()).andReturn(abstractInsnNode);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(false);
+        EasyMock.expect(abstractInsnNode.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode.getMethodInsnNode()).andReturn(methodInsnNode);
-        EasyMock.expect(methodInsnNode.isInitInsn()).andReturn(false);
         // method called is on field
         EasyMock.expect(methodInsnNode.getMethodOwner()).andReturn(fieldClassNode);
         EasyMock.expect(fieldClassNode.isValid()).andReturn(true);
 
         // Replay
         EasyMock.replay(classNode, methodNode, fieldNode, fieldClassNode,
-                insnList, abstractInsnNode, methodInsnNode);
+                insnList, abstractInsnNode, methodInsnNode, insnListIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling field type so should be no issues
         EasyMock.verify(classNode, methodNode, fieldNode, fieldClassNode,
-                insnList, abstractInsnNode, methodInsnNode);
+                insnList, abstractInsnNode, methodInsnNode, insnListIter);
         assertEquals(0, issues.size());
     }
 
@@ -167,6 +173,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         ClassNode argumentClassNode = EasyMock.mock(ClassNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnListIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode = EasyMock.mock(MethodInsnNode.class);
 
@@ -184,23 +191,25 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(argumentNodes);
         EasyMock.expect(argumentClassNode.getClassName()).andReturn(argumentClassName).times(2);
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(1).times(2);
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode);
+        EasyMock.expect(insnList.iterator()).andReturn(insnListIter);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(true);
+        EasyMock.expect(insnListIter.next()).andReturn(abstractInsnNode);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(false);
+        EasyMock.expect(abstractInsnNode.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode.getMethodInsnNode()).andReturn(methodInsnNode);
-        EasyMock.expect(methodInsnNode.isInitInsn()).andReturn(false);
         // method called is on argument
         EasyMock.expect(methodInsnNode.getMethodOwner()).andReturn(argumentClassNode);
         EasyMock.expect(argumentClassNode.isValid()).andReturn(true);
 
         // Replay
         EasyMock.replay(classNode, methodNode, argumentClassNode,
-                insnList, abstractInsnNode, methodInsnNode);
+                insnList, abstractInsnNode, methodInsnNode, insnListIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling argument type so should be no issues
         EasyMock.verify(classNode, methodNode, argumentClassNode,
-                insnList, abstractInsnNode, methodInsnNode);
+                insnList, abstractInsnNode, methodInsnNode, insnListIter);
         assertEquals(0, issues.size());
     }
 
@@ -215,6 +224,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         ClassNode initializedClassNode = EasyMock.mock(ClassNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnListIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode1 = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode1 = EasyMock.mock(MethodInsnNode.class);
         AbstractInsnNode abstractInsnNode2 = EasyMock.mock(AbstractInsnNode.class);
@@ -231,31 +241,31 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(2).times(3);
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode1);
+        EasyMock.expect(insnList.iterator()).andReturn(insnListIter);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(true).times(2).andReturn(false);
+        EasyMock.expect(insnListIter.next()).andReturn(abstractInsnNode1).andReturn(abstractInsnNode2);
+        EasyMock.expect(abstractInsnNode1.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode1.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode1.getMethodInsnNode()).andReturn(methodInsnNode1);
         // initializing type method
         EasyMock.expect(methodInsnNode1.getMethodOwner()).andReturn(initializedClassNode);
         EasyMock.expect(methodInsnNode1.isInitInsn()).andReturn(true);
-        EasyMock.expect(initializedClassNode.getClassName()).andReturn(initializedClassName);
+        EasyMock.expect(initializedClassNode.getClassName()).andReturn(initializedClassName).times(2);
         // calling method on initialized type
-        EasyMock.expect(insnList.get(1)).andReturn(abstractInsnNode2);
+        EasyMock.expect(abstractInsnNode2.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode2.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode2.getMethodInsnNode()).andReturn(methodInsnNode2);
         EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(initializedClassNode);
-        EasyMock.expect(methodInsnNode2.isInitInsn()).andReturn(false);
-        EasyMock.expect(initializedClassNode.getClassName()).andReturn(initializedClassName);
         EasyMock.expect(initializedClassNode.isValid()).andReturn(true).times(2);
 
         // Replay
         EasyMock.replay(classNode, methodNode, initializedClassNode, insnList,
-                abstractInsnNode1, methodInsnNode1, abstractInsnNode2, methodInsnNode2);
+                abstractInsnNode1, methodInsnNode1, abstractInsnNode2, methodInsnNode2, insnListIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling initialized type so should be no issues
         EasyMock.verify(classNode, methodNode, initializedClassNode, insnList,
-                abstractInsnNode1, methodInsnNode1, abstractInsnNode2, methodInsnNode2);
+                abstractInsnNode1, methodInsnNode1, abstractInsnNode2, methodInsnNode2, insnListIter);
         assertEquals(0, issues.size());
     }
 
@@ -277,6 +287,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode argumentClassNode = EasyMock.mock(ClassNode.class);
         ClassNode otherClassNode = EasyMock.mock(ClassNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnListIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode1 = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode1 = EasyMock.mock(MethodInsnNode.class);
         AbstractInsnNode abstractInsnNode2 = EasyMock.mock(AbstractInsnNode.class);
@@ -302,27 +313,26 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(argumentNodes);
         EasyMock.expect(argumentClassNode.getClassName()).andReturn(argumentClassName).times(2);
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(3).times(4);
+        EasyMock.expect(insnList.iterator()).andReturn(insnListIter);
+        EasyMock.expect(insnListIter.hasNext()).andReturn(true).times(3).andReturn(false);
+        EasyMock.expect(insnListIter.next()).andReturn(abstractInsnNode1).andReturn(abstractInsnNodeLine).andReturn(abstractInsnNode2);
         // method called is on argument - say this method returns of type otherClass
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode1);
+        EasyMock.expect(abstractInsnNode1.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode1.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode1.getMethodInsnNode()).andReturn(methodInsnNode1);
-        EasyMock.expect(methodInsnNode1.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode1.getMethodOwner()).andReturn(argumentClassNode);
         EasyMock.expect(argumentClassNode.isValid()).andReturn(true);
         // line number node called to set the current line number
-        EasyMock.expect(insnList.get(1)).andReturn(abstractInsnNodeLine);
-        EasyMock.expect(abstractInsnNodeLine.isMethodInsnNode()).andReturn(false);
         EasyMock.expect(abstractInsnNodeLine.isLineNumberNode()).andReturn(true);
         EasyMock.expect(abstractInsnNodeLine.getLineNumberNode()).andReturn(lineNumberNode);
         EasyMock.expect(lineNumberNode.getLineNumber()).andReturn(lineNumber);
         // method is called on otherClass - this violates principle of least knowledge
-        EasyMock.expect(insnList.get(2)).andReturn(abstractInsnNode2);
+        EasyMock.expect(abstractInsnNode2.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode2.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode2.getMethodInsnNode()).andReturn(methodInsnNode2);
         EasyMock.expect(methodInsnNode2.isInitInsn()).andReturn(false);
-        EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(otherClassNode);
-        EasyMock.expect(otherClassNode.getClassName()).andReturn(otherClassName);
+        EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(otherClassNode).times(2);
+        EasyMock.expect(otherClassNode.getClassName()).andReturn(otherClassName).times(2);
         EasyMock.expect(otherClassNode.isValid()).andReturn(true);
         EasyMock.expect(methodNode.getName()).andReturn(methodName);
         EasyMock.expect(classNode.getFileName()).andReturn(fileName);
@@ -330,13 +340,13 @@ public class PrincipleLeastKnowledgeRuleTest {
         // Replay
         EasyMock.replay(classNode, methodNode, argumentClassNode, otherClassNode,
                 insnList, abstractInsnNode1, methodInsnNode1, abstractInsnNode2,
-                methodInsnNode2, abstractInsnNodeLine, lineNumberNode);
+                methodInsnNode2, abstractInsnNodeLine, lineNumberNode, insnListIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling other type so should have issue with all information
         EasyMock.verify(classNode, methodNode, argumentClassNode, otherClassNode,
                 insnList, abstractInsnNode1, methodInsnNode1, abstractInsnNode2,
-                methodInsnNode2, abstractInsnNodeLine, lineNumberNode);
+                methodInsnNode2, abstractInsnNodeLine, lineNumberNode, insnListIter);
         assertEquals(1, issues.size());
         assertEquals(Severity.INFO, issues.get(0).getSeverity());
         assertEquals(lineNumber, issues.get(0).getLine());
@@ -369,8 +379,11 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode otherClassNode2 = EasyMock.mock(ClassNode.class);
         ClassNode otherClassNode3 = EasyMock.mock(ClassNode.class);
         InsnList insnList1 = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter1 = EasyMock.mock(Iterator.class);
         InsnList insnList2 = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter2 = EasyMock.mock(Iterator.class);
         InsnList insnList3 = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter3 = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode1 = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode1 = EasyMock.mock(MethodInsnNode.class);
         AbstractInsnNode abstractInsnNode2 = EasyMock.mock(AbstractInsnNode.class);
@@ -410,43 +423,42 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode1.getMethods()).andReturn(methodNodes1);
         EasyMock.expect(methodNode1.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode1.getInstructions()).andReturn(insnList1);
-        EasyMock.expect(insnList1.size()).andReturn(2).times(3);
-
+        EasyMock.expect(insnList1.iterator()).andReturn(insnIter1);
+        EasyMock.expect(insnIter1.hasNext()).andReturn(true).times(2).andReturn(false);
+        EasyMock.expect(insnIter1.next()).andReturn(abstractInsnNodeLine1).andReturn(abstractInsnNode1);
         // line number node 1 called to set the current line number
-        EasyMock.expect(insnList1.get(0)).andReturn(abstractInsnNodeLine1);
-        EasyMock.expect(abstractInsnNodeLine1.isMethodInsnNode()).andReturn(false);
         EasyMock.expect(abstractInsnNodeLine1.isLineNumberNode()).andReturn(true);
         EasyMock.expect(abstractInsnNodeLine1.getLineNumberNode()).andReturn(lineNumberNode1);
         EasyMock.expect(lineNumberNode1.getLineNumber()).andReturn(lineNumber1);
         // method is called on otherClass1 - this violates principle of least knowledge
-        EasyMock.expect(insnList1.get(1)).andReturn(abstractInsnNode1);
+        EasyMock.expect(abstractInsnNode1.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode1.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode1.getMethodInsnNode()).andReturn(methodInsnNode1);
         EasyMock.expect(methodInsnNode1.isInitInsn()).andReturn(false);
-        EasyMock.expect(methodInsnNode1.getMethodOwner()).andReturn(otherClassNode1);
+        EasyMock.expect(methodInsnNode1.getMethodOwner()).andReturn(otherClassNode1).times(2);
         EasyMock.expect(otherClassNode1.isValid()).andReturn(true);
-        EasyMock.expect(otherClassNode1.getClassName()).andReturn(otherClassName1);
+        EasyMock.expect(otherClassNode1.getClassName()).andReturn(otherClassName1).times(2);
         EasyMock.expect(methodNode1.getName()).andReturn(methodName1);
         EasyMock.expect(classNode1.getFileName()).andReturn(fileName1);
 
         EasyMock.expect(methodNode2.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode2.getInstructions()).andReturn(insnList2);
-        EasyMock.expect(insnList2.size()).andReturn(2).times(3);
+        EasyMock.expect(insnList2.iterator()).andReturn(insnIter2);
+        EasyMock.expect(insnIter2.hasNext()).andReturn(true).times(2).andReturn(false);
+        EasyMock.expect(insnIter2.next()).andReturn(abstractInsnNodeLine2).andReturn(abstractInsnNode2);
 
         // line number node 2 called to set the current line number
-        EasyMock.expect(insnList2.get(0)).andReturn(abstractInsnNodeLine2);
-        EasyMock.expect(abstractInsnNodeLine2.isMethodInsnNode()).andReturn(false);
         EasyMock.expect(abstractInsnNodeLine2.isLineNumberNode()).andReturn(true);
         EasyMock.expect(abstractInsnNodeLine2.getLineNumberNode()).andReturn(lineNumberNode2);
         EasyMock.expect(lineNumberNode2.getLineNumber()).andReturn(lineNumber2);
         // method is called on otherClass2 - this violates principle of least knowledge
-        EasyMock.expect(insnList2.get(1)).andReturn(abstractInsnNode2);
+        EasyMock.expect(abstractInsnNode2.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode2.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode2.getMethodInsnNode()).andReturn(methodInsnNode2);
         EasyMock.expect(methodInsnNode2.isInitInsn()).andReturn(false);
-        EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(otherClassNode2);
+        EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(otherClassNode2).times(2);
         EasyMock.expect(otherClassNode2.isValid()).andReturn(true);
-        EasyMock.expect(otherClassNode2.getClassName()).andReturn(otherClassName2);
+        EasyMock.expect(otherClassNode2.getClassName()).andReturn(otherClassName2).times(2);
         EasyMock.expect(methodNode2.getName()).andReturn(methodName2);
         EasyMock.expect(classNode1.getFileName()).andReturn(fileName1);
 
@@ -455,22 +467,22 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode2.getMethods()).andReturn(methodNodes2);
         EasyMock.expect(methodNode3.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode3.getInstructions()).andReturn(insnList3);
-        EasyMock.expect(insnList3.size()).andReturn(2).times(3);
+        EasyMock.expect(insnList3.iterator()).andReturn(insnIter3);
+        EasyMock.expect(insnIter3.hasNext()).andReturn(true).times(2).andReturn(false);
+        EasyMock.expect(insnIter3.next()).andReturn(abstractInsnNodeLine3).andReturn(abstractInsnNode3);
 
         // line number node 3 called to set the current line number
-        EasyMock.expect(insnList3.get(0)).andReturn(abstractInsnNodeLine3);
-        EasyMock.expect(abstractInsnNodeLine3.isMethodInsnNode()).andReturn(false);
         EasyMock.expect(abstractInsnNodeLine3.isLineNumberNode()).andReturn(true);
         EasyMock.expect(abstractInsnNodeLine3.getLineNumberNode()).andReturn(lineNumberNode3);
         EasyMock.expect(lineNumberNode3.getLineNumber()).andReturn(lineNumber3);
         // method is called on otherClass3 - this violates principle of least knowledge
-        EasyMock.expect(insnList3.get(1)).andReturn(abstractInsnNode3);
+        EasyMock.expect(abstractInsnNode3.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode3.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode3.getMethodInsnNode()).andReturn(methodInsnNode3);
         EasyMock.expect(methodInsnNode3.isInitInsn()).andReturn(false);
-        EasyMock.expect(methodInsnNode3.getMethodOwner()).andReturn(otherClassNode3);
+        EasyMock.expect(methodInsnNode3.getMethodOwner()).andReturn(otherClassNode3).times(2);
         EasyMock.expect(otherClassNode3.isValid()).andReturn(true);
-        EasyMock.expect(otherClassNode3.getClassName()).andReturn(otherClassName3);
+        EasyMock.expect(otherClassNode3.getClassName()).andReturn(otherClassName3).times(2);
         EasyMock.expect(methodNode3.getName()).andReturn(methodName3);
         EasyMock.expect(classNode2.getFileName()).andReturn(fileName2);
 
@@ -479,7 +491,8 @@ public class PrincipleLeastKnowledgeRuleTest {
                 otherClassNode1, otherClassNode2, otherClassNode3, insnList1, insnList2, insnList3,
                 abstractInsnNode1, methodInsnNode1, abstractInsnNode2, methodInsnNode2,
                 abstractInsnNode3, methodInsnNode3, abstractInsnNodeLine1, lineNumberNode1,
-                abstractInsnNodeLine2, lineNumberNode2, abstractInsnNodeLine3, lineNumberNode3);
+                abstractInsnNodeLine2, lineNumberNode2, abstractInsnNodeLine3, lineNumberNode3,
+                insnIter1, insnIter3, insnIter2);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling other types so should have 3 issues with all information
@@ -487,7 +500,8 @@ public class PrincipleLeastKnowledgeRuleTest {
                 otherClassNode1, otherClassNode2, otherClassNode3, insnList1, insnList2, insnList3,
                 abstractInsnNode1, methodInsnNode1, abstractInsnNode2, methodInsnNode2,
                 abstractInsnNode3, methodInsnNode3, abstractInsnNodeLine1, lineNumberNode1,
-                abstractInsnNodeLine2, lineNumberNode2, abstractInsnNodeLine3, lineNumberNode3);
+                abstractInsnNodeLine2, lineNumberNode2, abstractInsnNodeLine3, lineNumberNode3,
+                insnIter1, insnIter3, insnIter2);
 
         assertEquals(3, issues.size());
         assertEquals(Severity.INFO, issues.get(0).getSeverity());
@@ -524,6 +538,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode classNode = EasyMock.mock(ClassNode.class);
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode = EasyMock.mock(MethodInsnNode.class);
         ClassNode whitelistedClass = EasyMock.mock(ClassNode.class);
@@ -538,11 +553,12 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(1).times(2);
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode);
+        EasyMock.expect(insnList.iterator()).andReturn(insnIter);
+        EasyMock.expect(insnIter.hasNext()).andReturn(true).andReturn(false);
+        EasyMock.expect(insnIter.next()).andReturn(abstractInsnNode);
+        EasyMock.expect(abstractInsnNode.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode.getMethodInsnNode()).andReturn(methodInsnNode);
-        EasyMock.expect(methodInsnNode.isInitInsn()).andReturn(false);
         // method called is on whitelistedClass
         EasyMock.expect(methodInsnNode.getMethodOwner()).andReturn(whitelistedClass);
         EasyMock.expect(whitelistedClass.getClassName()).andReturn(whitelistedClassName);
@@ -550,12 +566,12 @@ public class PrincipleLeastKnowledgeRuleTest {
 
         // Replay
         EasyMock.replay(classNode, methodNode, insnList, abstractInsnNode,
-                methodInsnNode, whitelistedClass);
+                methodInsnNode, whitelistedClass, insnIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling whitelisted class so should be no issues
         EasyMock.verify(classNode, methodNode, insnList, abstractInsnNode,
-                methodInsnNode, whitelistedClass);
+                methodInsnNode, whitelistedClass, insnIter);
         assertEquals(0, issues.size());
     }
 
@@ -580,6 +596,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode classNode = EasyMock.mock(ClassNode.class);
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode1 = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode1 = EasyMock.mock(MethodInsnNode.class);
         ClassNode whitelistedClass1 = EasyMock.mock(ClassNode.class);
@@ -600,28 +617,27 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(3).times(4);
+        EasyMock.expect(insnList.iterator()).andReturn(insnIter);
+        EasyMock.expect(insnIter.hasNext()).andReturn(true).times(3).andReturn(false);
+        EasyMock.expect(insnIter.next()).andReturn(abstractInsnNode1).andReturn(abstractInsnNode2).andReturn(abstractInsnNode3);
         // method called on whitelistedClass1
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode1);
+        EasyMock.expect(abstractInsnNode1.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode1.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode1.getMethodInsnNode()).andReturn(methodInsnNode1);
-        EasyMock.expect(methodInsnNode1.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode1.getMethodOwner()).andReturn(whitelistedClass1);
         EasyMock.expect(whitelistedClass1.getClassName()).andReturn(whitelistedClassName1);
         EasyMock.expect(whitelistedClass1.isValid()).andReturn(true);
         // method called on whitelistedClass2
-        EasyMock.expect(insnList.get(1)).andReturn(abstractInsnNode2);
+        EasyMock.expect(abstractInsnNode2.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode2.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode2.getMethodInsnNode()).andReturn(methodInsnNode2);
-        EasyMock.expect(methodInsnNode2.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(whitelistedClass2);
         EasyMock.expect(whitelistedClass2.getClassName()).andReturn(whitelistedClassName2);
         EasyMock.expect(whitelistedClass2.isValid()).andReturn(true);
         // method called on whitelistedClass3
-        EasyMock.expect(insnList.get(2)).andReturn(abstractInsnNode3);
+        EasyMock.expect(abstractInsnNode3.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode3.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode3.getMethodInsnNode()).andReturn(methodInsnNode3);
-        EasyMock.expect(methodInsnNode3.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode3.getMethodOwner()).andReturn(whitelistedClass3);
         EasyMock.expect(whitelistedClass3.getClassName()).andReturn(whitelistedClassName3);
         EasyMock.expect(whitelistedClass3.isValid()).andReturn(true);
@@ -630,14 +646,14 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.replay(classNode, methodNode, insnList, abstractInsnNode1,
                 abstractInsnNode2, abstractInsnNode3, methodInsnNode1,
                 methodInsnNode2, methodInsnNode3, whitelistedClass1,
-                whitelistedClass2, whitelistedClass3);
+                whitelistedClass2, whitelistedClass3, insnIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling whitelisted classes so should be no issues
         EasyMock.verify(classNode, methodNode, insnList, abstractInsnNode1,
                 abstractInsnNode2, abstractInsnNode3, methodInsnNode1,
                 methodInsnNode2, methodInsnNode3, whitelistedClass1,
-                whitelistedClass2, whitelistedClass3);
+                whitelistedClass2, whitelistedClass3, insnIter);
         assertEquals(0, issues.size());
     }
 
@@ -657,6 +673,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode classNode = EasyMock.mock(ClassNode.class);
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode = EasyMock.mock(MethodInsnNode.class);
         ClassNode whitelistedClass = EasyMock.mock(ClassNode.class);
@@ -671,11 +688,12 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(1).times(2);
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode);
+        EasyMock.expect(insnList.iterator()).andReturn(insnIter);
+        EasyMock.expect(insnIter.hasNext()).andReturn(true).andReturn(false);
+        EasyMock.expect(insnIter.next()).andReturn(abstractInsnNode);
+        EasyMock.expect(abstractInsnNode.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode.getMethodInsnNode()).andReturn(methodInsnNode);
-        EasyMock.expect(methodInsnNode.isInitInsn()).andReturn(false);
         // method called is on class in whitelistedPackage
         EasyMock.expect(methodInsnNode.getMethodOwner()).andReturn(whitelistedClass);
         EasyMock.expect(whitelistedClass.getClassName()).andReturn(whitelistedClassName);
@@ -683,12 +701,12 @@ public class PrincipleLeastKnowledgeRuleTest {
 
         // Replay
         EasyMock.replay(classNode, methodNode, insnList, abstractInsnNode,
-                methodInsnNode, whitelistedClass);
+                methodInsnNode, whitelistedClass, insnIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling whitelisted class so should be no issues
         EasyMock.verify(classNode, methodNode, insnList, abstractInsnNode,
-                methodInsnNode, whitelistedClass);
+                methodInsnNode, whitelistedClass, insnIter);
         assertEquals(0, issues.size());
     }
 
@@ -713,6 +731,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         ClassNode classNode = EasyMock.mock(ClassNode.class);
         MethodNode methodNode = EasyMock.mock(MethodNode.class);
         InsnList insnList = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter = EasyMock.mock(Iterator.class);
         AbstractInsnNode abstractInsnNode1 = EasyMock.mock(AbstractInsnNode.class);
         MethodInsnNode methodInsnNode1 = EasyMock.mock(MethodInsnNode.class);
         ClassNode whitelistedClass1 = EasyMock.mock(ClassNode.class);
@@ -733,28 +752,27 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode.getInstructions()).andReturn(insnList);
-        EasyMock.expect(insnList.size()).andReturn(3).times(4);
+        EasyMock.expect(insnList.iterator()).andReturn(insnIter);
+        EasyMock.expect(insnIter.hasNext()).andReturn(true).times(3).andReturn(false);
+        EasyMock.expect(insnIter.next()).andReturn(abstractInsnNode1).andReturn(abstractInsnNode2).andReturn(abstractInsnNode3);
         // method called on whitelistedClass1
-        EasyMock.expect(insnList.get(0)).andReturn(abstractInsnNode1);
+        EasyMock.expect(abstractInsnNode1.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode1.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode1.getMethodInsnNode()).andReturn(methodInsnNode1);
-        EasyMock.expect(methodInsnNode1.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode1.getMethodOwner()).andReturn(whitelistedClass1);
         EasyMock.expect(whitelistedClass1.getClassName()).andReturn(whitelistedClassName1);
         EasyMock.expect(whitelistedClass1.isValid()).andReturn(true);
         // method called on whitelistedClass2
-        EasyMock.expect(insnList.get(1)).andReturn(abstractInsnNode2);
+        EasyMock.expect(abstractInsnNode2.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode2.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode2.getMethodInsnNode()).andReturn(methodInsnNode2);
-        EasyMock.expect(methodInsnNode2.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode2.getMethodOwner()).andReturn(whitelistedClass2);
         EasyMock.expect(whitelistedClass2.getClassName()).andReturn(whitelistedClassName2);
         EasyMock.expect(whitelistedClass2.isValid()).andReturn(true);
         // method called on whitelistedClass3
-        EasyMock.expect(insnList.get(2)).andReturn(abstractInsnNode3);
+        EasyMock.expect(abstractInsnNode3.isLineNumberNode()).andReturn(false);
         EasyMock.expect(abstractInsnNode3.isMethodInsnNode()).andReturn(true);
         EasyMock.expect(abstractInsnNode3.getMethodInsnNode()).andReturn(methodInsnNode3);
-        EasyMock.expect(methodInsnNode3.isInitInsn()).andReturn(false);
         EasyMock.expect(methodInsnNode3.getMethodOwner()).andReturn(whitelistedClass3);
         EasyMock.expect(whitelistedClass3.getClassName()).andReturn(whitelistedClassName3);
         EasyMock.expect(whitelistedClass3.isValid()).andReturn(true);
@@ -763,14 +781,14 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.replay(classNode, methodNode, insnList, abstractInsnNode1,
                 abstractInsnNode2, abstractInsnNode3, methodInsnNode1,
                 methodInsnNode2, methodInsnNode3, whitelistedClass1,
-                whitelistedClass2, whitelistedClass3);
+                whitelistedClass2, whitelistedClass3, insnIter);
         List<Issue> issues = rule.apply(classNodes, options);
 
         // Verify - calling whitelisted classes so should be no issues
         EasyMock.verify(classNode, methodNode, insnList, abstractInsnNode1,
                 abstractInsnNode2, abstractInsnNode3, methodInsnNode1,
                 methodInsnNode2, methodInsnNode3, whitelistedClass1,
-                whitelistedClass2, whitelistedClass3);
+                whitelistedClass2, whitelistedClass3, insnIter);
         assertEquals(0, issues.size());
     }
 
@@ -956,5 +974,55 @@ public class PrincipleLeastKnowledgeRuleTest {
         Assertions.assertEquals(0, issues.size());
     }
 
+    @Test
+    public void plkRuleFulListOfDependencies() {
+        ClassNode node = EasyMock.mock(ClassNode.class);
+        Map<String, ClassNode> nodeMap = new HashMap<>();
+        nodeMap.put("d", node);
+        MethodNode method = EasyMock.mock(MethodNode.class);
+        List<MethodNode> mList = new ArrayList<>();
+        InsnList instructions = EasyMock.mock(InsnList.class);
+        Iterator<AbstractInsnNode> insnIter = EasyMock.mock(Iterator.class);
+        AbstractInsnNode aInstruction = EasyMock.mock(AbstractInsnNode.class);
+        MethodInsnNode mInstruction = EasyMock.mock(MethodInsnNode.class);
+        ClassNode owner = EasyMock.mock(ClassNode.class);
+        Options options = EasyMock.mock(Options.class);
+        options.attributes = new HashMap<>();
+        mList.add(method);
 
+        EasyMock.expect(node.getClassName()).andReturn("d").times(4);
+        EasyMock.expect(node.getFileName()).andReturn("d.class").times(3);
+        EasyMock.expect(node.getFields()).andReturn(new ArrayList<>());
+        EasyMock.expect(node.getMethods()).andReturn(mList);
+        EasyMock.expect(method.getInstructions()).andReturn(instructions);
+        EasyMock.expect(method.getArgumentTypes()).andReturn(new ArrayList<>());
+        EasyMock.expect(instructions.iterator()).andReturn(insnIter);
+        EasyMock.expect(insnIter.hasNext()).andReturn(true).times(3).andReturn(false);
+        EasyMock.expect(insnIter.next()).andReturn(aInstruction).times(3);
+
+        EasyMock.expect(aInstruction.isLineNumberNode()).andReturn(false).times(3);
+        EasyMock.expect(aInstruction.isMethodInsnNode()).andReturn(true).times(3);
+        EasyMock.expect(aInstruction.getMethodInsnNode()).andReturn(mInstruction).times(3);
+        EasyMock.expect(mInstruction.isInitInsn()).andReturn(false).times(3);
+        EasyMock.expect(mInstruction.getMethodOwner()).andReturn(owner).times(6);
+
+        EasyMock.expect(owner.isValid()).andReturn(true).times(3);
+        EasyMock.expect(owner.getClassName()).andReturn("a").times(2);
+        EasyMock.expect(owner.getClassName()).andReturn("b").times(2);
+        EasyMock.expect(owner.getClassName()).andReturn("c").times(2);
+
+        EasyMock.expect(method.getName()).andReturn("e");
+        EasyMock.expect(method.getName()).andReturn("f");
+        EasyMock.expect(method.getName()).andReturn("g");
+        EasyMock.expect(options.get("severity")).andReturn("WARNING").times(3);
+
+        EasyMock.replay(node, method, instructions, aInstruction, mInstruction, owner, options, insnIter);
+
+        Rule plkRule = new PrincipleLeastKnowledgeRule();
+        List<Issue> result = plkRule.apply(nodeMap, options);
+
+        EasyMock.verify(node, method, instructions, aInstruction, mInstruction, owner, options, insnIter);
+
+        assertEquals(3, result.size());
+    }
 }
