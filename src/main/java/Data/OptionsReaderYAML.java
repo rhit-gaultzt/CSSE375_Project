@@ -15,30 +15,35 @@ import java.util.Map;
 public class OptionsReaderYAML {
 
 
-    private final String filename;
+    private final File file;
+    private final Yaml yaml;
 
 
     public OptionsReaderYAML(String filename) {
-        this.filename = filename;
+        this.file = new File(filename);
+        this.yaml = new Yaml();
+    }
+
+    public OptionsReaderYAML(File file,  Yaml yaml) {
+        this.file = file;
+        this.yaml = yaml;
     }
 
 
     public Map<String, Options> readOptions() {
         Map<String, Options> config = new HashMap<>();
-        Yaml yaml = new Yaml();
-        File initialFile = new File(this.filename);
         try {
-            InputStream targetStream = new FileInputStream(initialFile);
-            Map<String, Object> file = yaml.load(targetStream);
+            InputStream targetStream = new FileInputStream(this.file);
+            Map<String, Object> data = this.yaml.load(targetStream);
 
 
-            for (String ruleKey : file.keySet()) {
-                if (!(file.get(ruleKey) instanceof Map))
+            for (String ruleKey : data.keySet()) {
+                if (!(data.get(ruleKey) instanceof Map))
                     throw new Error("Error Parsing Config: \"" + ruleKey
                             + "\" is not a valid rule config, must be map");
 
                 @SuppressWarnings("unchecked")
-                Map<String, Object> rule = (Map<String, Object>) file.get(ruleKey);
+                Map<String, Object> rule = (Map<String, Object>) data.get(ruleKey);
                 List<String> keys = new ArrayList<>();
                 List<String> values = new ArrayList<>();
 
