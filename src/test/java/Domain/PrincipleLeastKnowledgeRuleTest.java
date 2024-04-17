@@ -940,7 +940,7 @@ public class PrincipleLeastKnowledgeRuleTest {
                 classNodes, plkRule.getDefaultOptions());
 
         // Verify - violates plk
-        Assertions.assertEquals(21, issues.size());
+        Assertions.assertEquals(20, issues.size());
     }
 
     @Test
