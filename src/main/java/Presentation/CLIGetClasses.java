@@ -1,10 +1,10 @@
 package Presentation;
 
-import java.io.InputStream;
+import Data.InputReader;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CLIGetClasses {
 

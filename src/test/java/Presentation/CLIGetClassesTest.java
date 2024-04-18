@@ -1,14 +1,11 @@
 package Presentation;
 
-import Domain.Rule;
+import Data.InputReader;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.List;
-import java.util.Scanner;
 
 public class CLIGetClassesTest {
 

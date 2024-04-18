@@ -1,13 +1,10 @@
 package Data;
 
-import Presentation.InputReader;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 
 import static org.junit.Assert.assertEquals;
 
