@@ -5,6 +5,7 @@ import org.objectweb.asm.ClassWriter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.*;
@@ -41,6 +42,7 @@ public class ChangeJarOutput {
     }
 
     private void copyEntriesStartingWith(JarFile originalJar, JarOutputStream newJarOutputStream, String prefix) throws IOException {
+        byte[] buffer = new byte[4096];
         Enumeration<JarEntry> entries = originalJar.entries();
 
         while (entries.hasMoreElements()) {
@@ -48,7 +50,14 @@ public class ChangeJarOutput {
             if (entry.getName().startsWith(prefix)) {
                 JarEntry newEntry = new JarEntry(entry.getName());
                 newJarOutputStream.putNextEntry(newEntry);
-                originalJar.getInputStream(entry).transferTo(newJarOutputStream);
+
+                try (InputStream inputStream = originalJar.getInputStream(entry)) {
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        newJarOutputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+
                 newJarOutputStream.closeEntry();
             }
         }
