@@ -1,9 +1,12 @@
 package Presentation;
 
+import Data.JavaByteCodeAdapter.ClassNode;
 import Data.OptionsReaderYAML;
 import Domain.ClassStreamHandler;
 import Domain.Issue;
 import Domain.Rule;
+import Domain.RuleHandler;
+import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -35,7 +38,7 @@ public class MainTest {
     public void testFindIssuesBasic() throws IOException {
         Main main = new Main();
         String[] files = { "target/classes/TestClasses/mime.class", "target/classes/TestClasses/symbolism.class" };
-        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"));
+        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"), new ChangeJarOutput("./testOutput.jar"));
 
         Assertions.assertEquals(3, issues.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", issues.get(0).getRule());
@@ -53,7 +56,7 @@ public class MainTest {
     public void testFindIssuesWithSwitch() throws IOException {
         Main main = new Main();
         String[] files = { "target/classes/TestClasses/mime.class", "target/classes/TestClasses/SwitchStatementClass.class" };
-        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"));
+        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"), new ChangeJarOutput("./testOutput.jar"));
 
         Assertions.assertEquals(3, issues.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", issues.get(0).getRule());
@@ -65,5 +68,40 @@ public class MainTest {
         Assertions.assertEquals("ClassNameRule", issues.get(2).getRule());
         Assertions.assertEquals(-1, issues.get(2).getLine());
         Assertions.assertEquals("class mime does not begin with a capital letter", issues.get(2).getMessage());
+    }
+
+    @Test
+    public void testHandleChangeRules() throws IOException {
+        // Record
+        Main main = new Main();
+        RuleHandler ruleHandler = EasyMock.mock(RuleHandler.class);
+        ChangeJarOutput changeJarOutput = EasyMock.mock(ChangeJarOutput.class);
+        List<ClassNode> classNodes = new ArrayList<>();
+
+        EasyMock.expect(ruleHandler.applyChangeRules()).andReturn(classNodes);
+        changeJarOutput.saveClassesAsJar(classNodes, "test.jar");
+        EasyMock.expectLastCall();
+
+        // Replay
+        EasyMock.replay(ruleHandler, changeJarOutput);
+        main.handleChangeRules(ruleHandler, changeJarOutput, new String[]{"test.jar"});
+
+        // Verify
+        EasyMock.verify(ruleHandler, changeJarOutput);
+    }
+
+    @Test
+    public void testHandleChangeRulesInvalid() throws IOException {
+        // Record
+        Main main = new Main();
+        RuleHandler ruleHandler = EasyMock.mock(RuleHandler.class);
+        ChangeJarOutput changeJarOutput = EasyMock.mock(ChangeJarOutput.class);
+
+        // Replay
+        EasyMock.replay(ruleHandler, changeJarOutput);
+        main.handleChangeRules(ruleHandler, changeJarOutput, new String[]{"Class.class", "test.jar"});
+
+        // Verify
+        EasyMock.verify(ruleHandler, changeJarOutput);
     }
 }

@@ -13,4 +13,6 @@ public interface AbstractInsnNode {
     JumpNode getJumpNode();
     boolean isSwitchNode();
     boolean isIfNode();
+    boolean isLdcNode();
+    LdcNode getLdcNode();
 }

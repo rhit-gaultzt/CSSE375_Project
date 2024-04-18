@@ -1,17 +1,10 @@
 package Presentation;
 
-import Data.DictionaryAPIAdapter;
-import Data.DirectedGraphModel.GraphImplementationNidi;
 import Data.JavaByteCodeAdapter.ASM.ClassReaderASM;
+import Data.JavaByteCodeAdapter.ClassNode;
 import Data.JavaByteCodeAdapter.ClassReader;
 import Data.OptionsReaderYAML;
 import Domain.*;
-import Domain.ClassNameChecks.ClassNameCheck;
-import Domain.ClassNameChecks.ClassNameInvalidCharacters;
-import Domain.ClassNameChecks.ClassNameInvalidWords;
-import Domain.ClassNameChecks.ClassNameStartsWithCapital;
-import Domain.Rules.DependencyInversionPrincipleRule;
-import Domain.Rules.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,22 +15,35 @@ public class Main {
     public static void main(String[] args) {
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         Output output = new CLIOutput();
+        ChangeJarOutput jarOutput = new ChangeJarOutput("./output.jar");
         Main main = new Main();
 
         try {
-            List<Issue> issues = main.findIssues(args, optionsReader);
+            List<Issue> issues = main.findIssues(args, optionsReader, jarOutput);
             output.outputIssues(issues);
         } catch (Exception error) {
             output.outputError(error.getMessage());
         }
     }
 
-    public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader) throws IOException {
+    public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader,
+                                  ChangeJarOutput jarOutput) throws IOException {
         String[] classNames = (new CLIGetClasses()).getClasses(args);
         HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classNames);
         ClassReader classReader = new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
-        return ruleHandler.applyRules();
+        List<Issue> issues = ruleHandler.applyRules();
+        handleChangeRules(ruleHandler, jarOutput, classNames);
+        return issues;
+    }
+
+    public void handleChangeRules(RuleHandler ruleHandler, ChangeJarOutput changeJarOutput,
+                                  String[] classNames) throws IOException {
+        if (classNames.length == 1 && classNames[0].endsWith(".jar")) {
+            List<ClassNode> classNodes = ruleHandler.applyChangeRules();
+            changeJarOutput.saveClassesAsJar(classNodes, classNames[0]);
+        }
+
     }
 }

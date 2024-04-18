@@ -29,7 +29,7 @@ public class ClassStreamHandler {
         Enumeration<JarEntry> jars = jar.entries();
         while (jars.hasMoreElements()) {
             JarEntry j = jars.nextElement();
-            if (j.getName().endsWith(".class")) {
+            if (j.getName().endsWith(".class") && !j.getName().contains("org")) {
                 InputStream input = jar.getInputStream(j);
                 classData.put(j.getName(),input);
             }

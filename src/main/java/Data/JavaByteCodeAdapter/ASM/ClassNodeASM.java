@@ -19,6 +19,9 @@ public class ClassNodeASM implements ClassNode {
 
     @Override
     public String getClassName() {
+        if (this.asmClassNode == null) {
+            return "NULL";
+        }
         return Type.getObjectType(this.asmClassNode.name).getClassName();
     }
 
@@ -106,6 +109,11 @@ public class ClassNodeASM implements ClassNode {
     @Override
     public boolean isAbstract() {
         return (this.asmClassNode.access & org.objectweb.asm.Opcodes.ACC_ABSTRACT) != 0;
+    }
+
+    @Override
+    public org.objectweb.asm.tree.ClassNode getClassNode() {
+        return this.asmClassNode;
     }
 
 }

@@ -14,5 +14,6 @@ public interface ClassNode {
     String getSourceFile();
     boolean isValid();
     boolean isAbstract();
+    org.objectweb.asm.tree.ClassNode getClassNode();
 }
 

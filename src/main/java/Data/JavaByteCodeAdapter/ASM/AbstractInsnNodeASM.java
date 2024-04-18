@@ -2,7 +2,7 @@ package Data.JavaByteCodeAdapter.ASM;
 
 import Data.JavaByteCodeAdapter.*;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.util.Printer;
+import org.objectweb.asm.tree.LdcInsnNode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -95,5 +95,15 @@ public class AbstractInsnNodeASM implements AbstractInsnNode {
     @Override
     public boolean isIfNode() {
         return this.conditionalJumps.contains(this.asmAbstractInsnNode.getOpcode());
+    }
+
+    @Override
+    public boolean isLdcNode() {
+        return this.asmAbstractInsnNode instanceof LdcInsnNode;
+    }
+
+    @Override
+    public LdcNode getLdcNode() {
+        return new LdcNodeASM((LdcInsnNode) this.asmAbstractInsnNode);
     }
 }
