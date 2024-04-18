@@ -307,7 +307,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         String otherClassName = "java.util.HashSet";
         String expectedMessage = "method add makes call to java.util.HashSet violating the Principle of Least Knowledge";
 
-        EasyMock.expect(classNode.getClassName()).andReturn(className).times(2);
+        EasyMock.expect(classNode.getClassName()).andReturn(className).times(4);
         EasyMock.expect(classNode.getFields()).andReturn(new ArrayList<>());
         EasyMock.expect(classNode.getMethods()).andReturn(methodNodes);
         EasyMock.expect(methodNode.getArgumentTypes()).andReturn(argumentNodes);
@@ -335,7 +335,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(otherClassNode.getClassName()).andReturn(otherClassName).times(2);
         EasyMock.expect(otherClassNode.isValid()).andReturn(true);
         EasyMock.expect(methodNode.getName()).andReturn(methodName);
-        EasyMock.expect(classNode.getFileName()).andReturn(fileName);
+        EasyMock.expect(classNode.getFileName()).andReturn(fileName).times(2);
 
         // Replay
         EasyMock.replay(classNode, methodNode, argumentClassNode, otherClassNode,
@@ -347,7 +347,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.verify(classNode, methodNode, argumentClassNode, otherClassNode,
                 insnList, abstractInsnNode1, methodInsnNode1, abstractInsnNode2,
                 methodInsnNode2, abstractInsnNodeLine, lineNumberNode, insnListIter);
-        assertEquals(1, issues.size());
+        assertEquals(2, issues.size());
         assertEquals(Severity.INFO, issues.get(0).getSeverity());
         assertEquals(lineNumber, issues.get(0).getLine());
         assertEquals(className, issues.get(0).getClassValue());
@@ -418,7 +418,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         String expectedMessage2 = "method get makes call to java.util.HashSet violating the Principle of Least Knowledge";
         String expectedMessage3 = "method contains makes call to java.util.Arrays violating the Principle of Least Knowledge";
 
-        EasyMock.expect(classNode1.getClassName()).andReturn(className1).times(3);
+        EasyMock.expect(classNode1.getClassName()).andReturn(className1).times(5);
         EasyMock.expect(classNode1.getFields()).andReturn(new ArrayList<>());
         EasyMock.expect(classNode1.getMethods()).andReturn(methodNodes1);
         EasyMock.expect(methodNode1.getArgumentTypes()).andReturn(new ArrayList<>());
@@ -439,7 +439,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(otherClassNode1.isValid()).andReturn(true);
         EasyMock.expect(otherClassNode1.getClassName()).andReturn(otherClassName1).times(2);
         EasyMock.expect(methodNode1.getName()).andReturn(methodName1);
-        EasyMock.expect(classNode1.getFileName()).andReturn(fileName1);
+        EasyMock.expect(classNode1.getFileName()).andReturn(fileName1).times(3);
 
         EasyMock.expect(methodNode2.getArgumentTypes()).andReturn(new ArrayList<>());
         EasyMock.expect(methodNode2.getInstructions()).andReturn(insnList2);
@@ -460,9 +460,8 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(otherClassNode2.isValid()).andReturn(true);
         EasyMock.expect(otherClassNode2.getClassName()).andReturn(otherClassName2).times(2);
         EasyMock.expect(methodNode2.getName()).andReturn(methodName2);
-        EasyMock.expect(classNode1.getFileName()).andReturn(fileName1);
 
-        EasyMock.expect(classNode2.getClassName()).andReturn(className2).times(2);
+        EasyMock.expect(classNode2.getClassName()).andReturn(className2).times(4);
         EasyMock.expect(classNode2.getFields()).andReturn(new ArrayList<>());
         EasyMock.expect(classNode2.getMethods()).andReturn(methodNodes2);
         EasyMock.expect(methodNode3.getArgumentTypes()).andReturn(new ArrayList<>());
@@ -484,7 +483,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(otherClassNode3.isValid()).andReturn(true);
         EasyMock.expect(otherClassNode3.getClassName()).andReturn(otherClassName3).times(2);
         EasyMock.expect(methodNode3.getName()).andReturn(methodName3);
-        EasyMock.expect(classNode2.getFileName()).andReturn(fileName2);
+        EasyMock.expect(classNode2.getFileName()).andReturn(fileName2).times(2);
 
         // Replay
         EasyMock.replay(classNode1, classNode2, methodNode1, methodNode2, methodNode3,
@@ -503,24 +502,24 @@ public class PrincipleLeastKnowledgeRuleTest {
                 abstractInsnNodeLine2, lineNumberNode2, abstractInsnNodeLine3, lineNumberNode3,
                 insnIter1, insnIter3, insnIter2);
 
-        assertEquals(3, issues.size());
+        assertEquals(5, issues.size());
         assertEquals(Severity.INFO, issues.get(0).getSeverity());
         assertEquals(lineNumber3, issues.get(0).getLine());
         assertEquals(className2, issues.get(0).getClassValue());
         assertEquals(fileName2, issues.get(0).getFile());
         assertEquals(expectedMessage3, issues.get(0).getMessage());
 
-        assertEquals(Severity.INFO, issues.get(1).getSeverity());
-        assertEquals(lineNumber1, issues.get(1).getLine());
-        assertEquals(className1, issues.get(1).getClassValue());
-        assertEquals(fileName1, issues.get(1).getFile());
-        assertEquals(expectedMessage1, issues.get(1).getMessage());
-
         assertEquals(Severity.INFO, issues.get(2).getSeverity());
-        assertEquals(lineNumber2, issues.get(2).getLine());
+        assertEquals(lineNumber1, issues.get(2).getLine());
         assertEquals(className1, issues.get(2).getClassValue());
         assertEquals(fileName1, issues.get(2).getFile());
-        assertEquals(expectedMessage2, issues.get(2).getMessage());
+        assertEquals(expectedMessage1, issues.get(2).getMessage());
+
+        assertEquals(Severity.INFO, issues.get(3).getSeverity());
+        assertEquals(lineNumber2, issues.get(3).getLine());
+        assertEquals(className1, issues.get(3).getClassValue());
+        assertEquals(fileName1, issues.get(3).getFile());
+        assertEquals(expectedMessage2, issues.get(3).getMessage());
     }
 
     @Test
@@ -844,7 +843,7 @@ public class PrincipleLeastKnowledgeRuleTest {
                 classNodes, plkRule.getDefaultOptions());
 
         // Verify - violates plk
-        Assertions.assertEquals(2, issues.size());
+        Assertions.assertEquals(3, issues.size());
         Assertions.assertEquals(expectedMessage1, issues.get(0).getMessage());
         Assertions.assertEquals(line1, issues.get(0).getLine());
         Assertions.assertEquals(className, issues.get(0).getClassValue());
@@ -883,7 +882,7 @@ public class PrincipleLeastKnowledgeRuleTest {
                 classNodes, options);
 
         // Verify - violates plk
-        Assertions.assertEquals(1, issues.size());
+        Assertions.assertEquals(2, issues.size());
 
         Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
         Assertions.assertEquals(line, issues.get(0).getLine());
@@ -917,7 +916,7 @@ public class PrincipleLeastKnowledgeRuleTest {
                 classNodes, options);
 
         // Verify - violates plk
-        Assertions.assertEquals(1, issues.size());
+        Assertions.assertEquals(2, issues.size());
 
         Assertions.assertEquals(expectedMessage, issues.get(0).getMessage());
         Assertions.assertEquals(line, issues.get(0).getLine());
@@ -940,7 +939,7 @@ public class PrincipleLeastKnowledgeRuleTest {
                 classNodes, plkRule.getDefaultOptions());
 
         // Verify - violates plk
-        Assertions.assertEquals(20, issues.size());
+        Assertions.assertEquals(22, issues.size());
     }
 
     @Test
@@ -975,6 +974,38 @@ public class PrincipleLeastKnowledgeRuleTest {
     }
 
     @Test
+    public void plkRuleGetValidClasses() {
+        PrincipleLeastKnowledgeRule rule = new PrincipleLeastKnowledgeRule();
+        ClassNode node = EasyMock.mock(ClassNode.class);
+        Options options = EasyMock.mock(Options.class);
+        List<String> valids = new ArrayList<>();
+        valids.add("a");
+        valids.add("b");
+        valids.add("c");
+
+        EasyMock.expect(node.getClassName()).andReturn("d").anyTimes();
+        EasyMock.expect(options.get("severity")).andReturn("INFO").anyTimes();
+        EasyMock.expect(node.getFileName()).andReturn("d.class").anyTimes();
+
+        EasyMock.replay(node, options);
+
+        Issue result = rule.issueValidClasses(node, valids, options);
+
+        EasyMock.verify(node, options);
+
+        Assertions.assertEquals(String.join("\n",
+                "Class d can access: ",
+                "\ta",
+                "\tb",
+                "\tc"), result.getMessage());
+        Assertions.assertEquals(Severity.INFO, result.getSeverity());
+        Assertions.assertEquals(0, result.getLine());
+        Assertions.assertEquals("d", result.getClassValue());
+        Assertions.assertEquals("d.class", result.getFile());
+        Assertions.assertEquals("PrincipleLeastKnowledgeRule", result.getRule());
+    }
+
+    @Test
     public void plkRuleFulListOfDependencies() {
         ClassNode node = EasyMock.mock(ClassNode.class);
         Map<String, ClassNode> nodeMap = new HashMap<>();
@@ -990,8 +1021,8 @@ public class PrincipleLeastKnowledgeRuleTest {
         options.attributes = new HashMap<>();
         mList.add(method);
 
-        EasyMock.expect(node.getClassName()).andReturn("d").times(4);
-        EasyMock.expect(node.getFileName()).andReturn("d.class").times(3);
+        EasyMock.expect(node.getClassName()).andReturn("d").times(6);
+        EasyMock.expect(node.getFileName()).andReturn("d.class").times(4);
         EasyMock.expect(node.getFields()).andReturn(new ArrayList<>());
         EasyMock.expect(node.getMethods()).andReturn(mList);
         EasyMock.expect(method.getInstructions()).andReturn(instructions);
@@ -1014,7 +1045,7 @@ public class PrincipleLeastKnowledgeRuleTest {
         EasyMock.expect(method.getName()).andReturn("e");
         EasyMock.expect(method.getName()).andReturn("f");
         EasyMock.expect(method.getName()).andReturn("g");
-        EasyMock.expect(options.get("severity")).andReturn("WARNING").times(3);
+        EasyMock.expect(options.get("severity")).andReturn("WARNING").times(4);
 
         EasyMock.replay(node, method, instructions, aInstruction, mInstruction, owner, options, insnIter);
 
@@ -1023,6 +1054,6 @@ public class PrincipleLeastKnowledgeRuleTest {
 
         EasyMock.verify(node, method, instructions, aInstruction, mInstruction, owner, options, insnIter);
 
-        assertEquals(3, result.size());
+        assertEquals(4, result.size());
     }
 }

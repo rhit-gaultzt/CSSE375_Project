@@ -332,13 +332,13 @@ public class RuleHandlerTest {
         List<Issue> actual = ruleHandler.applyRules();
 
         // Verify
-        Assertions.assertEquals(2, actual.size());
+        Assertions.assertEquals(3, actual.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", actual.get(0).getRule());
         Assertions.assertEquals(13, actual.get(0).getLine());
         Assertions.assertEquals("method test makes call to TestClasses.C violating the Principle of Least Knowledge", actual.get(0).getMessage());
-        Assertions.assertEquals("ClassNameRule", actual.get(1).getRule());
-        Assertions.assertEquals(-1, actual.get(1).getLine());
-        Assertions.assertEquals("class mime does not begin with a capital letter", actual.get(1).getMessage());
+        Assertions.assertEquals("ClassNameRule", actual.get(2).getRule());
+        Assertions.assertEquals(-1, actual.get(2).getLine());
+        Assertions.assertEquals("class mime does not begin with a capital letter", actual.get(2).getMessage());
 
     }
 
@@ -356,16 +356,16 @@ public class RuleHandlerTest {
         List<Issue> actual = ruleHandler.applyRules();
 
         // Verify
-        Assertions.assertEquals(3, actual.size());
+        Assertions.assertEquals(4, actual.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", actual.get(0).getRule());
         Assertions.assertEquals(13, actual.get(0).getLine());
         Assertions.assertEquals("method test makes call to TestClasses.C violating the Principle of Least Knowledge", actual.get(0).getMessage());
-        Assertions.assertEquals("SwitchRule", actual.get(1).getRule());
-        Assertions.assertEquals(5, actual.get(1).getLine());
-        Assertions.assertEquals("method doSwitch has a switch statement or is comparing the same variable to many values", actual.get(1).getMessage());
-        Assertions.assertEquals("ClassNameRule", actual.get(2).getRule());
-        Assertions.assertEquals(-1, actual.get(2).getLine());
-        Assertions.assertEquals("class mime does not begin with a capital letter", actual.get(2).getMessage());
+        Assertions.assertEquals("SwitchRule", actual.get(2).getRule());
+        Assertions.assertEquals(5, actual.get(2).getLine());
+        Assertions.assertEquals("method doSwitch has a switch statement or is comparing the same variable to many values", actual.get(2).getMessage());
+        Assertions.assertEquals("ClassNameRule", actual.get(3).getRule());
+        Assertions.assertEquals(-1, actual.get(3).getLine());
+        Assertions.assertEquals("class mime does not begin with a capital letter", actual.get(3).getMessage());
     }
 
     @Test

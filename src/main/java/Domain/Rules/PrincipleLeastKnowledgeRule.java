@@ -31,7 +31,24 @@ public class PrincipleLeastKnowledgeRule implements Rule {
         for (MethodNode methodNode : classNode.getMethods()) {
             issues.addAll(checkMethod(classNode, options, externalValidNames, methodNode, lineNumber));
         }
+
+        if (issues.size() > 0) {
+            issues.add(issueValidClasses(classNode, externalValidNames, options));
+        }
+
         return issues;
+    }
+
+    public Issue issueValidClasses(ClassNode classNode, List<String> externalValidNames, Options options) {
+        StringBuilder classList = new StringBuilder();
+        classList.append("Class ").append(classNode.getClassName()).append(" can access: \n");
+        for (String valid : externalValidNames) {
+            classList.append("\t").append(valid);
+            if (!externalValidNames.get(externalValidNames.size()-1).equals(valid)) {
+                classList.append("\n");
+            }
+        }
+        return new Issue(RULE_NAME, classNode, 0, options, classList.toString());
     }
 
     private List<Issue> checkMethod(ClassNode classNode, Options options, List<String> externalValidNames, MethodNode methodNode, LineNumber lineNumber) {
