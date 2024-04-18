@@ -22,7 +22,7 @@ public class ChangeJarOutputTest {
     public void testBasicChangeJarOutput() throws IOException {
         // Record
         ChangeJarOutput changeJarOutput = new ChangeJarOutput("testOutput.jar");
-        HashMap<String, InputStream> streams =  ClassStreamHandler.getClassStreams(new String[]{"./testJar.jar"});
+        HashMap<String, InputStream> streams =  new ClassStreamHandler().getClassStreams(new String[]{"./testJar.jar"});
         ClassReaderASM classReaderASM = new ClassReaderASM();
         List<ClassNode> classNodes = new ArrayList<>();
         for (InputStream stream  : streams.values()) {
@@ -41,7 +41,7 @@ public class ChangeJarOutputTest {
     public void testComplexChangeJarOutput() throws IOException {
         // Record
         ChangeJarOutput changeJarOutput = new ChangeJarOutput("testOutput.jar");
-        HashMap<String, InputStream> streams =  ClassStreamHandler.getClassStreams(new String[]{"./funTestJar.jar"});
+        HashMap<String, InputStream> streams =  new ClassStreamHandler().getClassStreams(new String[]{"./funTestJar.jar"});
         ClassReaderASM classReaderASM = new ClassReaderASM();
         List<ClassNode> classNodes = new ArrayList<>();
         for (InputStream stream  : streams.values()) {

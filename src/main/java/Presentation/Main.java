@@ -19,7 +19,8 @@ public class Main {
         Main main = new Main();
 
         try {
-            List<Issue> issues = main.findIssues(args, optionsReader, jarOutput, new CLIGetClasses(), new ClassReaderASM());
+            List<Issue> issues = main.findIssues(args, optionsReader, jarOutput,
+                    new CLIGetClasses(), new ClassReaderASM(), new ClassStreamHandler());
             output.outputIssues(issues);
         } catch (Exception error) {
             output.outputError(error.getMessage());
@@ -27,9 +28,9 @@ public class Main {
     }
 
     public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader, ChangeJarOutput jarOutput,
-                                  CLIGetClasses cliClasses, ClassReader classReader) throws IOException {
+                                  CLIGetClasses cliClasses, ClassReader classReader, ClassStreamHandler streamHandler) throws IOException {
         String[] classNames = cliClasses.getClasses(args);
-        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classNames);
+        HashMap<String, InputStream> classData = streamHandler.getClassStreams(classNames);
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
         List<Issue> issues = ruleHandler.applyRules();

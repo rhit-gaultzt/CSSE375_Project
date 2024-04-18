@@ -11,7 +11,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassStreamHandler {
-    public static HashMap<String, InputStream> getClassStreams(String[] filenames) throws IOException {
+    public HashMap<String, InputStream> getClassStreams(String[] filenames) throws IOException {
         HashMap<String, InputStream> classData = new HashMap<>();
         for (String filename : filenames) {
             if (filename.endsWith(".jar")) {
@@ -24,7 +24,7 @@ public class ClassStreamHandler {
         return classData;
     }
 
-    private static void handleJarClass(HashMap<String, InputStream> classData, String filename) throws IOException {
+    private void handleJarClass(HashMap<String, InputStream> classData, String filename) throws IOException {
         JarFile jar = new JarFile(filename);
         Enumeration<JarEntry> jars = jar.entries();
         while (jars.hasMoreElements()) {

@@ -6,6 +6,7 @@ import Data.JavaByteCodeAdapter.ClassReader;
 import Data.Options;
 import Data.OptionsReaderYAML;
 import Presentation.Main;
+import TestClasses.C;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -323,7 +324,7 @@ public class RuleHandlerTest {
     public void applyRulesIntegrationBasic() throws IOException {
         // Record
         String[] classnames = {"target/classes/TestClasses/mime.class"};
-        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
+        HashMap<String, InputStream> classData = new ClassStreamHandler().getClassStreams(classnames);
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         ClassReader classReader =  new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
@@ -347,7 +348,7 @@ public class RuleHandlerTest {
     public void applyRulesIntegrationMultiple() throws IOException {
         // Record
         String[] classnames = {"target/classes/TestClasses/mime.class", "target/classes/TestClasses/SwitchStatementClass.class"};
-        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
+        HashMap<String, InputStream> classData = new ClassStreamHandler().getClassStreams(classnames);
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         ClassReader classReader =  new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
@@ -372,7 +373,7 @@ public class RuleHandlerTest {
     public void applyRulesIntegrationNoRules() throws IOException {
         // Record
         String[] classnames = {};
-        HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classnames);
+        HashMap<String, InputStream> classData = new ClassStreamHandler().getClassStreams(classnames);
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
         ClassReader classReader =  new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
