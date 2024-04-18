@@ -24,7 +24,7 @@ jobs:
     - name: Set up JDK 16
       uses: actions/setup-java@v3
       with:
-        java-version: '9'
+        java-version: '8'
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
@@ -33,7 +33,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
-        java-version: '9'
+        java-version: '8'
         distribution: 'temurin'
     - name: Run the Maven verify phase
       run: mvn --batch-mode --update-snapshots verify
