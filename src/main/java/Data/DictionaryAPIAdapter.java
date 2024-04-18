@@ -1,12 +1,25 @@
 package Data;
 
+import Presentation.InputReader;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DictionaryAPIAdapter implements Dictionary {
     private final String urlPath = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-    private HttpURLConnection con;
+    private HttpURLConnection connection;
+    private InputReader reader;
+
+    public DictionaryAPIAdapter() {
+        this.connection = null;
+        this.reader = null;
+    }
+
+    public DictionaryAPIAdapter(HttpURLConnection con, InputReader reader) {
+        this.connection = con;
+        this.reader = reader;
+    }
 
     @Override
     public boolean isNoun(String word) {
@@ -29,9 +42,15 @@ public class DictionaryAPIAdapter implements Dictionary {
     private String makeRequest(String word) {
         //https://www.baeldung.com/java-http-request
         String result = "";
+        HttpURLConnection con = null;
         try {
-            URL url = new URL(urlPath + word);
-            this.con = (HttpURLConnection) url.openConnection();
+            if (this.connection == null) {
+                URL url = new URL(urlPath + word);
+                con = (HttpURLConnection) url.openConnection();
+            } else {
+                con = this.connection;
+            }
+
             con.setRequestMethod("GET");
             con.setUseCaches(false);
             con.setDoOutput(true);
@@ -40,15 +59,18 @@ public class DictionaryAPIAdapter implements Dictionary {
             int status = con.getResponseCode();
 
             //read response
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
+            InputReader inputReader = null;
+            if (this.reader == null) {
+                inputReader = new InputReader(con.getInputStream());
+            } else {
+                inputReader = this.reader;
             }
-            in.close();
-            result = content.toString();
+
+            String inputLine;
+            while ((inputLine = inputReader.nextLine()) != null) {
+                result = result + inputLine;
+            }
+            inputReader.close();
         } catch (Exception e) {
         } finally {
             if (con != null) {

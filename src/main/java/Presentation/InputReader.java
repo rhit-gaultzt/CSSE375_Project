@@ -14,7 +14,11 @@ public class InputReader {
         this.scanner = new Scanner(input);
     }
 
-    String nextLine() {
+    public String nextLine() {
         return scanner.nextLine();
+    }
+
+    public void close() {
+        scanner.close();
     }
 }
