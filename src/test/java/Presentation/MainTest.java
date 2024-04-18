@@ -1,5 +1,6 @@
 package Presentation;
 
+import Data.JavaByteCodeAdapter.ASM.ClassReaderASM;
 import Data.JavaByteCodeAdapter.ClassNode;
 import Data.OptionsReaderYAML;
 import Domain.ClassStreamHandler;
@@ -38,7 +39,8 @@ public class MainTest {
     public void testFindIssuesBasic() throws IOException {
         Main main = new Main();
         String[] files = { "target/classes/TestClasses/mime.class", "target/classes/TestClasses/symbolism.class" };
-        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"), new ChangeJarOutput("./testOutput.jar"));
+        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"),
+                new ChangeJarOutput("./testOutput.jar"), new CLIGetClasses(), new ClassReaderASM());
 
         Assertions.assertEquals(4, issues.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", issues.get(0).getRule());
@@ -56,7 +58,8 @@ public class MainTest {
     public void testFindIssuesWithSwitch() throws IOException {
         Main main = new Main();
         String[] files = { "target/classes/TestClasses/mime.class", "target/classes/TestClasses/SwitchStatementClass.class" };
-        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"), new ChangeJarOutput("./testOutput.jar"));
+        List<Issue> issues = main.findIssues(files, new OptionsReaderYAML("./config.yaml"),
+                new ChangeJarOutput("./testOutput.jar"), new CLIGetClasses(), new ClassReaderASM());
 
         Assertions.assertEquals(4, issues.size());
         Assertions.assertEquals("PrincipleLeastKnowledgeRule", issues.get(0).getRule());

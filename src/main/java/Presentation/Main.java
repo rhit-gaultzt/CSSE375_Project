@@ -19,18 +19,17 @@ public class Main {
         Main main = new Main();
 
         try {
-            List<Issue> issues = main.findIssues(args, optionsReader, jarOutput);
+            List<Issue> issues = main.findIssues(args, optionsReader, jarOutput, new CLIGetClasses(), new ClassReaderASM());
             output.outputIssues(issues);
         } catch (Exception error) {
             output.outputError(error.getMessage());
         }
     }
 
-    public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader,
-                                  ChangeJarOutput jarOutput) throws IOException {
-        String[] classNames = (new CLIGetClasses()).getClasses(args);
+    public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader, ChangeJarOutput jarOutput,
+                                  CLIGetClasses cliClasses, ClassReader classReader) throws IOException {
+        String[] classNames = cliClasses.getClasses(args);
         HashMap<String, InputStream> classData = ClassStreamHandler.getClassStreams(classNames);
-        ClassReader classReader = new ClassReaderASM();
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
         List<Issue> issues = ruleHandler.applyRules();
