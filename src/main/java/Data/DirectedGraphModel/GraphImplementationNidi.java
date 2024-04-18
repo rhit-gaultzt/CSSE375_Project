@@ -21,7 +21,7 @@ import static guru.nidi.graphviz.model.Link.to;
 public class GraphImplementationNidi implements Graph {
 
 
-    Map<String, Node> nodes = new HashMap<>();
+    private Map<String, Node> nodes = new HashMap<>();
 
 
     @Override
