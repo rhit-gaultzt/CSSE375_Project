@@ -106,5 +106,7 @@ public class GraphImplementationNidi implements Graph {
         }
     }
 
-
+    public Map<String, Node> getNodes() {
+        return nodes;
+    }
 }
