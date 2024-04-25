@@ -72,6 +72,11 @@ public class CLIOutput implements Output {
     }
 
     @Override
+    public void outputJarLocation(String path) {
+        System.out.println(String.format("\n%sUpdated Jar output to " + path + "%s", ANSI_LINE, ANSI_RESET));
+    }
+
+    @Override
     public void outputError(String error) {
         System.out.printf("%sLinter Error%s%n", ANSI_LINE, ANSI_RESET);
         System.out.printf("%s%s%s%n", ANSI_ERROR, error, ANSI_RESET);
