@@ -52,7 +52,7 @@ public class CLIOutput implements Output {
                     issue.getSeverity(), ANSI_RESET, ANSI_GREY, issue.getRule(), ANSI_RESET));
 
             if (issue.getLine() != -1)
-                buffer.append(String.format(" (LN%s)", issue.getLine()));
+                buffer.append(String.format(" (Line %s)", issue.getLine()));
             buffer.append(String.format("\n\t%s\n\n", issue.getMessage()));
 
             total.put(issue.getSeverity(), total.get(issue.getSeverity()) + 1);
