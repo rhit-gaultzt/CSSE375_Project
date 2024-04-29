@@ -34,8 +34,20 @@ public class Main {
 
     public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader, ChangeJarOutput jarOutput,
                                   CLIGetClasses cliClasses, ClassReader classReader, ClassStreamHandler streamHandler) throws IOException {
-        String[] classNames = cliClasses.getClasses(args);
-        HashMap<String, InputStream> classData = streamHandler.getClassStreams(classNames);
+        boolean hasValidClasses = false;
+        String[] classNames = {};
+        HashMap<String, InputStream> classData = new HashMap<>();
+        classNames = cliClasses.getClasses(args, true);
+        while (!hasValidClasses) {
+            try {
+                classData = streamHandler.getClassStreams(classNames);
+                hasValidClasses = true;
+            } catch (IOException e) {
+                cliClasses.displayInvalidClass(e);
+                classNames = cliClasses.getClasses(args, false);
+            }
+        }
+
         RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
         List<Issue> issues = ruleHandler.applyRules();

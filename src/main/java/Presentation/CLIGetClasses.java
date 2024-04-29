@@ -2,6 +2,7 @@ package Presentation;
 
 import Data.InputReader;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,19 @@ public class CLIGetClasses {
         this.output = printStream;
     }
 
-    public String[] getClasses(String[] args) {
+    public String[] getClasses(String[] args, boolean doInitialPrompt) {
         if (args.length > 0) {
             return args;
         } else {
-            return getClassesFromCLI();
+            return getClassesFromCLI(doInitialPrompt);
         }
     }
 
-    protected String[] getClassesFromCLI() {
+    protected String[] getClassesFromCLI(boolean doInitialPrompt) {
         List<String> classNames = new ArrayList<>();
-        initialPrompt();
+        if (doInitialPrompt) {
+            initialPrompt();
+        }
         do {
             classNames.add(getClassName());
         } while (wantsToAddMoreClasses());
@@ -62,5 +65,10 @@ public class CLIGetClasses {
                 this.output.println("Please input y or n\n");
             }
         }
+    }
+
+    public void displayInvalidClass(IOException e) {
+        System.out.println("\nInvalid Class/Jar Found: " + e.getMessage());
+        System.out.println("Please verify paths and try again.\n");
     }
 }

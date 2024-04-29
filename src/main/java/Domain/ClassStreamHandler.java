@@ -1,6 +1,7 @@
 package Domain;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -16,9 +17,11 @@ public class ClassStreamHandler {
         for (String filename : filenames) {
             if (filename.endsWith(".jar")) {
                 handleJarClass(classData, filename);
-            } else {
+            } else if (filename.endsWith(".class")) {
                 InputStream input = Files.newInputStream(new File(filename).toPath());
                 classData.put(filename, input);
+            } else {
+                throw new FileNotFoundException(filename);
             }
         }
         return classData;

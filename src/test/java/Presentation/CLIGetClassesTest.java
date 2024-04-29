@@ -161,7 +161,7 @@ public class CLIGetClassesTest {
 
         // Replay
         EasyMock.replay(input, output);
-        String[] actual = cliGetClasses.getClassesFromCLI();
+        String[] actual = cliGetClasses.getClassesFromCLI(true);
 
         // Verify
         Assertions.assertArrayEquals(expected, actual);
@@ -206,7 +206,7 @@ public class CLIGetClassesTest {
 
         // Replay
         EasyMock.replay(input, output);
-        String[] actual = cliGetClasses.getClassesFromCLI();
+        String[] actual = cliGetClasses.getClassesFromCLI(true);
 
         // Verify
         Assertions.assertArrayEquals(expected, actual);
@@ -253,7 +253,7 @@ public class CLIGetClassesTest {
 
         // Replay
         EasyMock.replay(input, output);
-        String[] actual = cliGetClasses.getClasses(args);
+        String[] actual = cliGetClasses.getClasses(args, true);
 
         // Verify
         Assertions.assertArrayEquals(expected, actual);
@@ -275,7 +275,7 @@ public class CLIGetClassesTest {
 
         // Replay
         EasyMock.replay(input, output);
-        String[] actual = cliGetClasses.getClasses(args);
+        String[] actual = cliGetClasses.getClasses(args, true);
 
         // Verify
         Assertions.assertArrayEquals(args, actual);

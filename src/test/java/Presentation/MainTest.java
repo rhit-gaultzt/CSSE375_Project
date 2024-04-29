@@ -122,7 +122,7 @@ public class MainTest {
         ClassReader classReader = EasyMock.mock(ClassReader.class);
         ClassStreamHandler streamHandler = EasyMock.mock(ClassStreamHandler.class);
 
-        EasyMock.expect(getClasses.getClasses(args)).andReturn(args);
+        EasyMock.expect(getClasses.getClasses(args, true)).andReturn(args);
         EasyMock.expect(streamHandler.getClassStreams(args)).andReturn(new HashMap<>());
         EasyMock.expect(optionsReader.readOptions()).andReturn(new HashMap<>());
 
@@ -152,7 +152,7 @@ public class MainTest {
         HashMap<String, InputStream> streams = new HashMap<>();
         streams.put(args[0], stream);
 
-        EasyMock.expect(getClasses.getClasses(args)).andReturn(args);
+        EasyMock.expect(getClasses.getClasses(args, true)).andReturn(args);
         EasyMock.expect(streamHandler.getClassStreams(args)).andReturn(streams);
         EasyMock.expect(optionsReader.readOptions()).andReturn(new HashMap<>());
         EasyMock.expect(classReader.createClassNode(stream)).andReturn(node);
