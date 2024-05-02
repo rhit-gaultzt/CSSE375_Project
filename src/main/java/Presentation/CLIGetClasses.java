@@ -68,7 +68,7 @@ public class CLIGetClasses {
     }
 
     public void displayInvalidClass(IOException e) {
-        System.out.println("\nInvalid Class/Jar Found: " + e.getMessage());
-        System.out.println("Please verify paths and try again.\n");
+        this.output.println("\nInvalid Class/Jar Found: " + e.getMessage());
+        this.output.println("Please verify paths and try again.\n");
     }
 }

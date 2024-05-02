@@ -181,4 +181,35 @@ public class MainTest {
         Assertions.assertEquals("class c does not begin with a capital letter", issues.get(0).getMessage());
         Assertions.assertEquals(-1, issues.get(0).getLine());
     }
+
+    @Test
+    public void testFindIssuesInvalidClass() throws IOException {
+        // Record
+        Main main = new Main();
+        String[] args1 = {"README.md"};
+        String[] args2 = {"a.class"};
+        FileNotFoundException e = new FileNotFoundException("README.md");
+        OptionsReaderYAML optionsReader = EasyMock.mock(OptionsReaderYAML.class);
+        ChangeJarOutput jarOuput = EasyMock.mock(ChangeJarOutput.class);
+        CLIGetClasses getClasses = EasyMock.mock(CLIGetClasses.class);
+        ClassReader classReader = EasyMock.mock(ClassReader.class);
+        ClassStreamHandler streamHandler = EasyMock.mock(ClassStreamHandler.class);
+
+        EasyMock.expect(getClasses.getClasses(args1, true)).andReturn(args1);
+        EasyMock.expect(streamHandler.getClassStreams(args1)).andThrow(e);
+        getClasses.displayInvalidClass(e);
+        EasyMock.expectLastCall();
+        EasyMock.expect(getClasses.getClasses(new String[] {}, false)).andReturn(args2);
+        EasyMock.expect(streamHandler.getClassStreams(args2)).andReturn(new HashMap<>());
+        EasyMock.expect(optionsReader.readOptions()).andReturn(new HashMap<>());
+
+        // Replay
+        EasyMock.replay(optionsReader, jarOuput, getClasses, classReader, streamHandler);
+        List<Issue> issues = main.findIssues(args1, optionsReader, jarOuput,
+                getClasses, classReader, streamHandler);
+
+        // Verify
+        EasyMock.verify(optionsReader, jarOuput, getClasses, classReader, streamHandler);
+        Assertions.assertEquals(0, issues.size());
+    }
 }

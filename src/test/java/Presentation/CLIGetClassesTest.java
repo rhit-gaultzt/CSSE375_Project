@@ -5,6 +5,7 @@ import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 public class CLIGetClassesTest {
@@ -279,6 +280,31 @@ public class CLIGetClassesTest {
 
         // Verify
         Assertions.assertArrayEquals(args, actual);
+        EasyMock.verify(input, output);
+    }
+
+    @Test
+    public void displayInvalidClassTest() {
+        // Record
+        InputReader input = EasyMock.mock(InputReader.class);
+        PrintStream output = EasyMock.mock(PrintStream.class);
+        CLIGetClasses cliGetClasses = new CLIGetClasses(input, output);
+        String file = "README.md";
+        FileNotFoundException e = new FileNotFoundException(file);
+
+        String expected1 = "\nInvalid Class/Jar Found: README.md";
+        String expected2 = "Please verify paths and try again.\n";
+
+        output.println(expected1);
+        EasyMock.expectLastCall();
+        output.println(expected2);
+        EasyMock.expectLastCall();
+
+        // Replay
+        EasyMock.replay(input, output);
+        cliGetClasses.displayInvalidClass(e);
+
+        // Verify
         EasyMock.verify(input, output);
     }
 }

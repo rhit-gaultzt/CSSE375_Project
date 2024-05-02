@@ -12,6 +12,8 @@ import java.util.*;
 
 public class Main {
     private boolean createsOutputJar = false;
+    private String[] classNames = {};
+    private HashMap<String, InputStream> classData = new HashMap<>();
 
     public static void main(String[] args) {
         OptionsReaderYAML optionsReader = new OptionsReaderYAML("./config.yaml");
@@ -34,25 +36,28 @@ public class Main {
 
     public List<Issue> findIssues(String[] args, OptionsReaderYAML optionsReader, ChangeJarOutput jarOutput,
                                   CLIGetClasses cliClasses, ClassReader classReader, ClassStreamHandler streamHandler) throws IOException {
-        boolean hasValidClasses = false;
-        String[] classNames = {};
-        HashMap<String, InputStream> classData = new HashMap<>();
-        classNames = cliClasses.getClasses(args, true);
-        while (!hasValidClasses) {
-            try {
-                classData = streamHandler.getClassStreams(classNames);
-                hasValidClasses = true;
-            } catch (IOException e) {
-                cliClasses.displayInvalidClass(e);
-                classNames = cliClasses.getClasses(args, false);
-            }
-        }
 
-        RuleHandler ruleHandler = new RuleHandler(optionsReader, classData, classReader);
+        this.handleGetClassData(args, cliClasses, streamHandler);
+        RuleHandler ruleHandler = new RuleHandler(optionsReader, this.classData, classReader);
         ClassStreamHandler.closeStreams(classData.values());
         List<Issue> issues = ruleHandler.applyRules();
         handleChangeRules(ruleHandler, jarOutput, classNames);
         return issues;
+    }
+
+    public void handleGetClassData(String[] args, CLIGetClasses cliClasses, ClassStreamHandler streamHandler) {
+        boolean hasValidClasses = false;
+        this.classNames = cliClasses.getClasses(args, true);
+
+        while (!hasValidClasses) {
+            try {
+                this.classData = streamHandler.getClassStreams(classNames);
+                hasValidClasses = true;
+            } catch (IOException e) {
+                cliClasses.displayInvalidClass(e);
+                this.classNames = cliClasses.getClasses(new String[] {}, false);
+            }
+        }
     }
 
     public void handleChangeRules(RuleHandler ruleHandler, ChangeJarOutput changeJarOutput,
