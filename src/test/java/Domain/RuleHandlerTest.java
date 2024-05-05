@@ -5,6 +5,8 @@ import Data.JavaByteCodeAdapter.ClassNode;
 import Data.JavaByteCodeAdapter.ClassReader;
 import Data.Options;
 import Data.OptionsReaderYAML;
+import Presentation.Main;
+import TestClasses.C;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
