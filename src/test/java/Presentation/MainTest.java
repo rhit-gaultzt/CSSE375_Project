@@ -22,8 +22,6 @@ public class MainTest {
     @Test
     public void testCloseStreams() throws IOException {
         ClassStreamHandler streamHandler = new ClassStreamHandler();
-        byte[] input1 = new byte[] {1,2,3,4,5,6,7,8};
-        byte[] input2 = new byte[] {2,4,6,8,1,3,5,7};
         InputStream sut1 = Files.newInputStream(new File("src/test/java/Presentation/MainTest.java").toPath());
         InputStream sut2 = Files.newInputStream(new File("src/main/java/Presentation/Main.java").toPath());
         List<InputStream> streams = new ArrayList<>();
