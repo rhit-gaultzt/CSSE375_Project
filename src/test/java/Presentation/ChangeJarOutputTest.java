@@ -6,15 +6,12 @@ import Domain.ClassStreamHandler;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 
 public class ChangeJarOutputTest {
 
