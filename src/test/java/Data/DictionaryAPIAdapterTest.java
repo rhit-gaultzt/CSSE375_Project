@@ -21,6 +21,8 @@ public class DictionaryAPIAdapterTest {
 
         connection.setRequestMethod("GET");
         EasyMock.expectLastCall();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
+        EasyMock.expectLastCall();
         connection.setUseCaches(false);
         EasyMock.expectLastCall();
         connection.setDoOutput(true);
@@ -52,6 +54,8 @@ public class DictionaryAPIAdapterTest {
         boolean expectedResult = true;
 
         connection.setRequestMethod("GET");
+        EasyMock.expectLastCall();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
         EasyMock.expectLastCall();
         connection.setUseCaches(false);
         EasyMock.expectLastCall();
@@ -85,6 +89,8 @@ public class DictionaryAPIAdapterTest {
 
         connection.setRequestMethod("GET");
         EasyMock.expectLastCall();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
+        EasyMock.expectLastCall();
         connection.setUseCaches(false);
         EasyMock.expectLastCall();
         connection.setDoOutput(true);
@@ -116,6 +122,8 @@ public class DictionaryAPIAdapterTest {
         boolean expectedResult = true;
 
         connection.setRequestMethod("GET");
+        EasyMock.expectLastCall();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
         EasyMock.expectLastCall();
         connection.setUseCaches(false);
         EasyMock.expectLastCall();
@@ -149,6 +157,8 @@ public class DictionaryAPIAdapterTest {
 
         connection.setRequestMethod("GET");
         EasyMock.expectLastCall();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
+        EasyMock.expectLastCall();
         connection.setUseCaches(false);
         EasyMock.expectLastCall();
         connection.setDoOutput(true);
@@ -180,6 +190,8 @@ public class DictionaryAPIAdapterTest {
         boolean expectedResult = true;
 
         connection.setRequestMethod("GET");
+        EasyMock.expectLastCall();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
         EasyMock.expectLastCall();
         connection.setUseCaches(false);
         EasyMock.expectLastCall();

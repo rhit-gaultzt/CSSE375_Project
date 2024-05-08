@@ -49,6 +49,7 @@ public class DictionaryAPIAdapter implements Dictionary {
             }
 
             con.setRequestMethod("GET");
+            con.addRequestProperty("User-Agent", "Mozilla/4.0");
             con.setUseCaches(false);
             con.setDoOutput(true);
 

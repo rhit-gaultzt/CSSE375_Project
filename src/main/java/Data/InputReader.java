@@ -1,6 +1,7 @@
 package Data;
 
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InputReader {
@@ -15,7 +16,11 @@ public class InputReader {
     }
 
     public String nextLine() {
-        return scanner.nextLine();
+        try {
+            return scanner.nextLine();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     public void close() {
